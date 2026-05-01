@@ -22,3 +22,13 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Catalogue PDF source workspaces (output PDFs are copied into public/)
+catalogue/
+catalogue-jacuzzi/
+catalogue-mobilier/
+
+# Audit / temp artifacts
+/tmp/
+audit-*/
+errors.json

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Award, Shield, Leaf, Clock } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import Footer from "@/components/Footer";
 import AnimatedImage from "@/components/AnimatedImage";
 import PageTransition from "@/components/PageTransition";
@@ -16,6 +17,11 @@ const stats = [
 ];
 
 const AboutPage = () => {
+  usePageMeta({
+    title: "Qui sommes-nous",
+    description: "GREENDOME — architecture nomade depuis 2010. Notre philosophie : concevoir avec soin, accompagner avec sincérité, écouter chaque client.",
+    path: "/qui-sommes-nous",
+  });
   return (
     <PageTransition>
       <div className="min-h-screen bg-background">
@@ -27,7 +33,7 @@ const AboutPage = () => {
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
                 Qui <span className="text-gradient-gold italic">sommes-nous</span> ?
               </h1>
-              <p className="max-w-2xl mx-auto text-foreground/60 text-lg font-light">
+              <p className="max-w-2xl mx-auto text-foreground/85 text-lg font-normal">
                 Une expertise unique au service de l'innovation architecturale
               </p>
             </motion.div>
@@ -43,8 +49,8 @@ const AboutPage = () => {
                   Plus de dix ans{" "}
                   <span className="text-gradient-gold italic">d'expertise</span>
                 </h2>
-                <p className="text-foreground/70 font-light leading-relaxed text-lg">
-                  Derrière nos dômes transparents se trouve une équipe de développement forte de plus de dix ans d'expérience dans la technologie de thermoformage du polycarbonate. Notre démarche est née d'une volonté d'apporter une innovation majeure aux professionnels du tourisme et de l'événementiel, en proposant des architectures spectaculaires à un coût maîtrisé. Nous avons à cœur de concevoir avec soin, de produire une qualité irréprochable et d'offrir un service sincère à chacun de nos partenaires.
+                <p className="text-foreground/85 font-normal leading-relaxed text-lg">
+                  Nos dômes transparents sont portés par une équipe de R&amp;D forte de plus de dix ans d'expérience dans le thermoformage du polycarbonate. Notre démarche est née d'une volonté simple : offrir aux professionnels du tourisme et de l'événementiel des architectures spectaculaires à un coût maîtrisé. Nous concevons avec soin, produisons avec exigence et accompagnons chacun de nos partenaires avec sincérité.
                 </p>
               </motion.div>
               <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }}>
@@ -86,8 +92,8 @@ const AboutPage = () => {
                   Qualité &{" "}
                   <span className="text-gradient-gold italic">certifications</span>
                 </h2>
-                <p className="text-foreground/70 font-light leading-relaxed text-lg mb-8">
-                  L'excellence de nos espaces étoilés repose sur une sélection rigoureuse de nos fournisseurs. Nous insistons sur l'utilisation de matières premières respectueuses de l'environnement et de très haute qualité. Cette exigence nous a permis d'obtenir de multiples brevets ainsi que les certifications ISO9001, CE, SGS et PICC, garantissant à nos clients B2B des installations fiables, durables et conformes aux standards internationaux.
+                <p className="text-foreground/85 font-normal leading-relaxed text-lg mb-8">
+                  L'excellence de nos installations repose sur une sélection rigoureuse de nos fournisseurs et l'usage de matières premières de très haute qualité, respectueuses de l'environnement. Cette exigence nous a permis d'obtenir plusieurs brevets ainsi que les certifications ISO9001, CE, SGS et PICC — la garantie, pour nos clients, d'installations fiables, durables et conformes aux standards internationaux.
                 </p>
                 <div className="flex flex-wrap gap-3">
                   {["ISO9001", "CE", "SGS", "PICC"].map((cert, i) => (

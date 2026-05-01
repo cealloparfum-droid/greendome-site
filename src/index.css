@@ -87,3 +87,32 @@
     background: linear-gradient(90deg, transparent, hsl(var(--gold) / 0.5), transparent);
   }
 }
+
+/* ------------------------------------------------------------------
+ * Custom cursor — cache le curseur natif uniquement sur desktop
+ * (préserve l'UX tactile et l'accessibilité clavier)
+ * ------------------------------------------------------------------ */
+@media (hover: hover) and (pointer: fine) {
+  html.custom-cursor-active,
+  html.custom-cursor-active body,
+  html.custom-cursor-active a,
+  html.custom-cursor-active button,
+  html.custom-cursor-active input,
+  html.custom-cursor-active textarea,
+  html.custom-cursor-active select,
+  html.custom-cursor-active [role="button"],
+  html.custom-cursor-active img {
+    cursor: none;
+  }
+
+  /* Sur /visualiser : on rend le curseur natif (précision drag 3D)
+     et on masque le point doré flottant. */
+  html.cursor-native,
+  html.cursor-native body,
+  html.cursor-native * {
+    cursor: auto !important;
+  }
+  html.cursor-native .greendome-floating-cursor {
+    display: none !important;
+  }
+}

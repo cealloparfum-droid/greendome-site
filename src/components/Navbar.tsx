@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import logo from "@/assets/logo-greendome.jpeg";
+import LogoMark from "./LogoMark";
+import Magnetic from "./Magnetic";
 
 const links = [
   { href: "/", label: "Accueil" },
@@ -11,7 +12,10 @@ const links = [
   { href: "/particuliers", label: "Particuliers" },
   { href: "/jacuzzi", label: "Jacuzzi" },
   { href: "/maisons-en-kit", label: "Maisons en kit" },
+  { href: "/mobilier", label: "Mobilier" },
   { href: "/location", label: "Location" },
+  { href: "/catalogues", label: "Catalogues" },
+  { href: "/visualiser", label: "Visualiser" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -27,11 +31,19 @@ const Navbar = () => {
         className="fixed top-0 left-0 right-0 z-50 border-b border-border/30 backdrop-blur-xl bg-background/60"
       >
         <div className="container mx-auto px-6 h-20 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-3">
-            <img src={logo} alt="GREENDOME" className="h-10 w-auto rounded-sm" />
+          <a href="/" className="group relative inline-flex items-center" aria-label="Greendome — Accueil">
+            {/* Halo doré derrière le logo (s'illumine au survol) */}
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 -m-4 rounded-full bg-primary/0 group-hover:bg-primary/20 blur-2xl transition-all duration-700"
+            />
+            {/* Logo détouré qui flotte dans la barre — pas de cadre, pas de fond */}
+            <LogoMark
+              className="relative h-11 w-auto select-none transition-transform duration-500 ease-out group-hover:scale-[1.06]"
+            />
           </a>
 
-          <nav className="hidden lg:flex items-center gap-4 xl:gap-6 text-[11px] xl:text-[12px] font-display font-semibold tracking-[0.2em] uppercase text-foreground/60">
+          <nav className="hidden lg:flex items-center gap-4 xl:gap-6 text-[11px] xl:text-[12px] font-display font-semibold tracking-[0.2em] uppercase text-foreground/75">
             {links.map((link, idx) => (
               <motion.a
                 key={link.href}
@@ -52,25 +64,27 @@ const Navbar = () => {
           </nav>
 
           <div className="flex items-center gap-4">
-            <motion.a
-              href="/contact"
-              className="group relative hidden md:inline-flex items-center overflow-hidden px-7 py-2.5 rounded-sm border border-primary/70 bg-primary/90 text-primary-foreground text-[11px] font-display font-semibold tracking-[0.3em] uppercase hover:glow-gold transition-all"
-              whileHover={{ scale: 1.04, letterSpacing: "0.36em" }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <span className="relative z-10">Devis</span>
-              <motion.span
-                aria-hidden
-                className="absolute inset-y-0 -left-1/2 w-1/2 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[-20deg]"
-                initial={{ x: "-100%" }}
-                whileHover={{ x: "350%" }}
-                transition={{ duration: 0.9, ease: "easeInOut" }}
-              />
-            </motion.a>
+            <Magnetic strength={0.35} className="hidden md:inline-block">
+              <motion.a
+                href="/contact"
+                className="group relative inline-flex items-center overflow-hidden px-7 py-2.5 rounded-sm border border-primary/70 bg-primary/90 text-primary-foreground text-[11px] font-display font-semibold tracking-[0.28em] uppercase hover:glow-gold transition-all whitespace-nowrap"
+                whileHover={{ scale: 1.04, letterSpacing: "0.32em" }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <span className="relative z-10">Imaginons votre projet</span>
+                <motion.span
+                  aria-hidden
+                  className="absolute inset-y-0 -left-1/2 w-1/2 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[-20deg]"
+                  initial={{ x: "-100%" }}
+                  whileHover={{ x: "350%" }}
+                  transition={{ duration: 0.9, ease: "easeInOut" }}
+                />
+              </motion.a>
+            </Magnetic>
 
             <button
-              className="lg:hidden w-10 h-10 flex items-center justify-center text-foreground/70"
+              className="lg:hidden w-10 h-10 flex items-center justify-center text-foreground/85"
               onClick={() => setMobileOpen(true)}
             >
               <Menu className="w-5 h-5" />
@@ -89,17 +103,18 @@ const Navbar = () => {
             exit={{ opacity: 0 }}
           >
             <button
-              className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-foreground/70"
+              className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-foreground/85"
               onClick={() => setMobileOpen(false)}
             >
               <X className="w-5 h-5" />
             </button>
-            <img src={logo} alt="GREENDOME" className="h-14 rounded-sm mb-4" />
+            {/* Logo détouré, sans cadre — il flotte dans le menu plein écran */}
+            <LogoMark className="h-20 w-auto mb-4 select-none" />
             {links.map((link, i) => (
               <motion.a
                 key={link.href}
                 href={link.href}
-                className="text-lg tracking-[0.2em] uppercase text-foreground/70 hover:text-primary transition-colors"
+                className="text-lg tracking-[0.2em] uppercase text-foreground/85 hover:text-primary transition-colors"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06 }}
@@ -116,7 +131,7 @@ const Navbar = () => {
               transition={{ delay: 0.4 }}
               onClick={() => setMobileOpen(false)}
             >
-              Demander un devis
+              Imaginons votre projet
             </motion.a>
           </motion.div>
         )}

@@ -19,6 +19,7 @@ import {
   Grape,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import Footer from "@/components/Footer";
 import AnimatedImage from "@/components/AnimatedImage";
 
@@ -147,6 +148,11 @@ const settings = [
 ];
 
 const JacuzziPage = () => {
+  usePageMeta({
+    title: "Jacuzzis signature",
+    description: "8 modèles signature : carrés, ronds, octogonaux. Jusqu'à 63 jets, intégration sur-mesure dans votre lieu.",
+    path: "/jacuzzi",
+  });
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -184,7 +190,7 @@ const JacuzziPage = () => {
             <br />
             en extérieur
           </h1>
-          <p className="max-w-2xl mx-auto text-foreground/75 text-lg md:text-xl font-light leading-relaxed">
+          <p className="max-w-2xl mx-auto text-foreground/75 text-lg md:text-xl font-normal leading-relaxed">
             Des spas d'exception taillés pour prolonger l'expérience Greendome.
             Quand la nature rencontre l'ingénierie, le rituel devient souvenir.
           </p>
@@ -226,14 +232,14 @@ const JacuzziPage = () => {
                   devient rituel
                 </span>
               </h2>
-              <p className="text-foreground/70 font-light leading-relaxed text-lg mb-6">
+              <p className="text-foreground/85 font-normal leading-relaxed text-lg mb-6">
                 Après le dôme, le spa. Nous avons sélectionné une collection de
                 jacuzzis haut de gamme pour sublimer les installations
                 Greendome et offrir à vos clients — ou à vous-même — un second
-                acte : celui de la détente absolue.
+                acte : celui de la détente absolue.
               </p>
-              <p className="text-foreground/70 font-light leading-relaxed text-lg">
-                Chaque modèle répond à une exigence unique : celle d'un objet
+              <p className="text-foreground/85 font-normal leading-relaxed text-lg">
+                Chaque modèle répond à une exigence unique : celle d'un objet
                 conçu pour durer, fabriqué avec des matériaux nobles et pensé
                 pour s'inscrire naturellement dans les décors les plus
                 raffinés.
@@ -299,7 +305,7 @@ const JacuzziPage = () => {
               Trois silhouettes,{" "}
               <span className="text-gradient-gold italic">un idéal</span>
             </h2>
-            <p className="max-w-2xl mx-auto text-foreground/60 text-lg font-light">
+            <p className="max-w-2xl mx-auto text-foreground/85 text-lg font-normal">
               Carré, rond ou octogonal — chaque forme répond à un art de vivre.
             </p>
           </motion.div>
@@ -336,7 +342,7 @@ const JacuzziPage = () => {
                   <h3 className="text-3xl md:text-5xl font-bold leading-tight mb-6">
                     {c.name}
                   </h3>
-                  <p className="text-foreground/70 font-light leading-relaxed text-lg mb-8">
+                  <p className="text-foreground/85 font-normal leading-relaxed text-lg mb-8">
                     {c.description}
                   </p>
 
@@ -413,9 +419,9 @@ const JacuzziPage = () => {
                 un horizon
               </span>
             </h2>
-            <p className="max-w-xl mx-auto text-foreground/75 text-lg font-light leading-relaxed italic">
-              « L'objet s'efface au profit du paysage. C'est là, précisément,
-              que naît l'émotion. »
+            <p className="max-w-xl mx-auto text-foreground/75 text-lg font-normal leading-relaxed italic">
+              « L'objet s'efface au profit du paysage. C'est là, précisément,
+              que naît l'émotion. »
             </p>
           </motion.div>
         </div>
@@ -440,7 +446,7 @@ const JacuzziPage = () => {
               <span className="text-gradient-gold italic">ingénierie</span> de
               précision
             </h2>
-            <p className="max-w-2xl mx-auto text-foreground/60 text-lg font-light">
+            <p className="max-w-2xl mx-auto text-foreground/85 text-lg font-normal">
               Matériaux nobles, contrôle professionnel, durabilité éprouvée.
             </p>
           </motion.div>
@@ -460,7 +466,7 @@ const JacuzziPage = () => {
                   <f.icon className="w-5 h-5 text-primary" />
                 </div>
                 <h3 className="text-xl font-bold mb-3">{f.title}</h3>
-                <p className="text-foreground/60 font-light leading-relaxed text-sm">
+                <p className="text-foreground/75 font-normal leading-relaxed text-sm">
                   {f.text}
                 </p>
               </motion.div>
@@ -487,7 +493,7 @@ const JacuzziPage = () => {
               Des cadres{" "}
               <span className="text-gradient-gold italic">d'exception</span>
             </h2>
-            <p className="max-w-2xl mx-auto text-foreground/60 text-lg font-light">
+            <p className="max-w-2xl mx-auto text-foreground/85 text-lg font-normal">
               Partout où se pose un jacuzzi Greendome, le décor change. Le
               rituel, lui, reste le même.
             </p>
@@ -524,7 +530,7 @@ const JacuzziPage = () => {
                   <h3 className="text-2xl md:text-3xl font-bold mb-3">
                     {s.title}
                   </h3>
-                  <p className="text-foreground/75 font-light leading-relaxed text-sm md:text-base max-w-md">
+                  <p className="text-foreground/75 font-normal leading-relaxed text-sm md:text-base max-w-md">
                     {s.description}
                   </p>
                 </div>
@@ -563,7 +569,7 @@ const JacuzziPage = () => {
                 Posé, encastré ou{" "}
                 <span className="text-gradient-gold italic">semi-enterré</span>
               </h2>
-              <p className="text-foreground/70 font-light leading-relaxed text-lg mb-8">
+              <p className="text-foreground/85 font-normal leading-relaxed text-lg mb-8">
                 Chaque projet est pensé en dialogue avec son environnement.
                 Notre équipe étudie l'implantation, les accès techniques, le
                 raccordement et le traitement des abords pour que le spa
@@ -579,7 +585,7 @@ const JacuzziPage = () => {
                   <p className="text-sm font-semibold text-foreground/90 mb-1">
                     Étude technique
                   </p>
-                  <p className="text-xs text-foreground/60 font-light">
+                  <p className="text-xs text-foreground/85 font-normal">
                     Fondation, évacuations, accès
                   </p>
                 </motion.div>
@@ -591,7 +597,7 @@ const JacuzziPage = () => {
                   <p className="text-sm font-semibold text-foreground/90 mb-1">
                     Habillage
                   </p>
-                  <p className="text-xs text-foreground/60 font-light">
+                  <p className="text-xs text-foreground/85 font-normal">
                     Bois composite, pierre, terrasse
                   </p>
                 </motion.div>
@@ -670,8 +676,8 @@ const JacuzziPage = () => {
                 une configuration
               </span>
             </h2>
-            <p className="text-foreground/70 font-light leading-relaxed text-lg mb-10">
-              Chaque installation est étudiée sur-mesure : dimensions,
+            <p className="text-foreground/85 font-normal leading-relaxed text-lg mb-10">
+              Chaque installation est étudiée sur-mesure : dimensions,
               coloris de coque, finitions des jupes en composite bois,
               configuration des jets. Parlons de votre projet.
             </p>
@@ -683,7 +689,7 @@ const JacuzziPage = () => {
                 whileTap={{ scale: 0.97 }}
               >
                 <Music className="w-4 h-4" />
-                Demander un devis
+                Imaginons votre projet
               </motion.a>
               <motion.a
                 href="/solutions"

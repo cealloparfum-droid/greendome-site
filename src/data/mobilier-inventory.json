@@ -1,0 +1,96 @@
+{
+  "_meta": {
+    "description": "Inventaire des 53 images de mobilier — canapés, fauteuils, lits — pour la collection Mobilier & Aménagement Greendome",
+    "source": "/Users/pomme/Desktop/new canap/optimized/",
+    "totalImages": 53,
+    "lastUpdated": "2026-04-28"
+  },
+  "collections": {
+    "canapes": {
+      "id": "canapes",
+      "title": "Canapés & Modulables",
+      "subtitle": "L'art de recevoir, du salon privé à la suite hôtelière",
+      "description": "Velours côtelés, bouclés moelleux, lignes organiques. Chaque pièce est pensée pour ancrer un lieu — un salon de villa, une suite glamping, un lounge de réception. Modèles droits, d'angle, modulaires ou convertibles : la composition s'adapte à votre espace.",
+      "tag": "Salons & Lounges",
+      "icon": "Sofa",
+      "count": 23,
+      "images": [
+        { "src": "1.jpeg", "caption": "Ensemble velours côtelé gris ardoise & ottoman", "context": "Salon classique parisien" },
+        { "src": "5.jpeg", "caption": "Canapé convertible cuir camel modulable", "context": "Pièce d'appoint chic" },
+        { "src": "7.jpeg", "caption": "Convertible tweed cream avec plaid laine", "context": "Suite d'invités raffinée" },
+        { "src": "8.jpeg", "caption": "Grand angle modulaire velours brossé cream", "context": "Lounge de prestige" },
+        { "src": "9.jpeg", "caption": "Trois places bouclé cream baie vitrée", "context": "Salon contemporain" },
+        { "src": "10.jpeg", "caption": "Modulaire ocre quatre places jardin", "context": "Salle de réception ouverte" },
+        { "src": "11.jpeg", "caption": "Angle terracotta bouclé cheminée", "context": "Salon d'hiver chaleureux" },
+        { "src": "12.jpeg", "caption": "Trio Bubble velours sarcelle, citron & olive", "context": "Pièce signature" },
+        { "src": "13.jpeg", "caption": "Daybed velours côtelé vert sapin", "context": "Bibliothèque de lecture" },
+        { "src": "14.jpeg", "caption": "Convertible côtelé vert position lit", "context": "Pièce multi-fonction" },
+        { "src": "15.jpeg", "caption": "XL velours côtelé vert sapin panneaux bois", "context": "Salon manoir" },
+        { "src": "17.jpeg", "caption": "Daybed côtelé vert structure inox", "context": "Lounge architectural" },
+        { "src": "19.jpeg", "caption": "Angle vert sapin avec méridienne", "context": "Salon familial" },
+        { "src": "20.jpeg", "caption": "Modulaire convertible olive position lit", "context": "Studio polyvalent" },
+        { "src": "21.jpeg", "caption": "Deux places velours côtelé bordeaux", "context": "Salon bibliothèque" },
+        { "src": "22.jpeg", "caption": "XL velours capitonné moutarde", "context": "Réception haut de gamme" },
+        { "src": "23.jpeg", "caption": "Courbe organique bouclé cream", "context": "Suite d'exception" },
+        { "src": "24.jpeg", "caption": "Courbe bleu nuit bouclé sculptural", "context": "Galerie résidentielle" },
+        { "src": "25.jpeg", "caption": "Angle côtelé gris ardoise méridienne", "context": "Loft contemporain" },
+        { "src": "27.jpeg", "caption": "Duo convertibles terracotta vue urbaine", "context": "Penthouse" },
+        { "src": "28.jpeg", "caption": "Deux places bouclé ocre", "context": "Salon vert sauge" },
+        { "src": "32.jpeg", "caption": "Trois places bouclé cream tufté", "context": "Salon minéral" },
+        { "src": "35.jpeg", "caption": "Grand angle tissé gris ouvert", "context": "Villa minimaliste" }
+      ]
+    },
+    "fauteuils": {
+      "id": "fauteuils",
+      "title": "Fauteuils & Assises d'Appoint",
+      "subtitle": "Une signature dans chaque coin",
+      "description": "De l'iconique fauteuil bouclé au pouf modulaire, chaque assise compose un fragment d'atmosphère. Idéal pour habiter une suite, créer une bulle de lecture sous un dôme, ou ponctuer un salon de réception d'une pièce d'auteur.",
+      "tag": "Coins lecture & Suites",
+      "icon": "Armchair",
+      "count": 14,
+      "images": [
+        { "src": "2.jpeg", "caption": "Fauteuil bouclé olive avec deux ottomans", "context": "Coin lecture lumineux" },
+        { "src": "3.jpeg", "caption": "Modules tapis cuivre & fauteuil olive", "context": "Salon bohème chic" },
+        { "src": "4.jpeg", "caption": "Fauteuil tufté linen gris bibliothèque", "context": "Bureau résidentiel" },
+        { "src": "6.jpeg", "caption": "Fauteuil bouclé cream design ludique", "context": "Salon d'enfant raffiné" },
+        { "src": "16.jpeg", "caption": "Bouclé cream & fauteuil sauge", "context": "Salon classique parisien" },
+        { "src": "18.jpeg", "caption": "Fauteuil iconique rayé bleu & sable", "context": "Galerie design" },
+        { "src": "26.jpeg", "caption": "Duo fauteuils velours moutarde & rouille", "context": "Lounge sculpté" },
+        { "src": "29.jpeg", "caption": "Deux méridiennes velours côtelé olive", "context": "Suite double" },
+        { "src": "30.jpeg", "caption": "Méridiennes côtelé cream tufté", "context": "Suite glamping cocooning" },
+        { "src": "31.jpeg", "caption": "Fauteuil convertible bouclé cream", "context": "Pièce d'appoint multifonction" },
+        { "src": "33.jpeg", "caption": "Fauteuil velours côtelé moutarde", "context": "Salon d'hôtel boutique" },
+        { "src": "34.jpeg", "caption": "Fauteuil tufté cream à oreilles", "context": "Suite hôtelière" },
+        { "src": "36.jpeg", "caption": "Daybed convertible velours gris", "context": "Suite parentale" },
+        { "src": "38.jpeg", "caption": "Chaise longue corduroy terracotta & ottoman", "context": "Coin lecture jardin d'hiver" }
+      ]
+    },
+    "lits": {
+      "id": "lits",
+      "title": "Lits & Chambres",
+      "subtitle": "Le sommeil comme un art de vivre",
+      "description": "Têtes de lit capitonnées, velours profonds, bouclés enveloppants. Conçus pour transformer une chambre en suite — pour vos hôtes, vos invités d'exception ou votre intimité familiale. Chaque modèle est livré avec son matelas haut de gamme.",
+      "tag": "Suites & Chambres parentales",
+      "icon": "BedDouble",
+      "count": 16,
+      "images": [
+        { "src": "37.jpeg", "caption": "Lit velours bleu acier tête sculptée", "context": "Suite d'auteur" },
+        { "src": "39.jpeg", "caption": "Lit velours côtelé vert sapin king", "context": "Chambre manoir" },
+        { "src": "40.jpeg", "caption": "Lit tufté olive plaid sable", "context": "Chambre minimaliste" },
+        { "src": "41.jpeg", "caption": "Lit tufté olive king bois clair", "context": "Suite paisible" },
+        { "src": "42.jpeg", "caption": "Lit bouclé cream tufté king", "context": "Chambre cocooning" },
+        { "src": "43.jpeg", "caption": "Lit cabriolet cream nuage", "context": "Suite d'exception" },
+        { "src": "44.jpeg", "caption": "Lit terracotta accents ethniques", "context": "Suite voyageur" },
+        { "src": "45.jpeg", "caption": "Lit velours côtelé gris XXL", "context": "Chambre architectural" },
+        { "src": "46.jpeg", "caption": "Lit côtelé gris pâle sculpture art", "context": "Penthouse minéral" },
+        { "src": "47.jpeg", "caption": "Lit velours chocolat capitonné", "context": "Suite parentale" },
+        { "src": "48.jpeg", "caption": "Lit cream triple coussin capitonné", "context": "Chambre haussmannienne" },
+        { "src": "49.jpeg", "caption": "Lit velours côtelé olive arche vitrée", "context": "Suite lumineuse" },
+        { "src": "50.jpeg", "caption": "Lit côtelé gris cream banquettes", "context": "Suite double" },
+        { "src": "51.jpeg", "caption": "Lit velours brun cabriolet japonisant", "context": "Chambre zen" },
+        { "src": "52.jpeg", "caption": "Lit velours côtelé bleu nuit", "context": "Suite raffinée" },
+        { "src": "53.jpeg", "caption": "Lit bouclé cream dais courbe", "context": "Chambre cocon" }
+      ]
+    }
+  }
+}

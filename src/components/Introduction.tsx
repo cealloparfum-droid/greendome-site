@@ -29,8 +29,8 @@ const Introduction = () => {
               <span className="text-gradient-gold italic">transformer</span>{" "}
               vos espaces
             </h2>
-            <p className="text-foreground/70 font-light leading-relaxed text-lg">
-              Nous proposons aux professionnels des bulles transparentes haut de gamme, conçues pour transformer n'importe quel environnement extérieur en un espace de vie spectaculaire. Que vous soyez gérant d'un village vacances, organisateur de salons ou restaurateur, nos dômes offrent une solution innovante pour vous démarquer.
+            <p className="text-foreground/85 font-normal leading-relaxed text-lg">
+              Nous proposons aux professionnels des bulles transparentes haut de gamme, conçues pour transformer n'importe quel environnement extérieur en un espace de vie spectaculaire. Que vous gériez un village vacances, organisiez des salons ou teniez un restaurant, nos dômes vous offrent une solution unique pour vous démarquer.
             </p>
           </div>
 
@@ -86,7 +86,7 @@ const Introduction = () => {
               Dîner sous les{" "}
               <span className="text-gradient-gold italic">étoiles</span>
             </h2>
-            <p className="text-foreground/70 font-light leading-relaxed text-lg">
+            <p className="text-foreground/85 font-normal leading-relaxed text-lg">
               Fini les espaces clos et bruyants. Avec nos structures panoramiques, offrez à vos clients la possibilité de dîner sous un vaste ciel étoilé ou de s'endormir en pleine nature avec tout le confort moderne. Nos solutions sont rapides à déployer, extrêmement résistantes et pensées pour maximiser la rentabilité de vos espaces extérieurs tout au long de l'année.
             </p>
           </div>

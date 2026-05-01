@@ -64,7 +64,7 @@ const WelcomeBanner = () => {
               <span className="text-gradient-gold">GREENDOME</span>
             </h3>
 
-            <p className="text-foreground/60 font-light text-sm leading-relaxed mb-6">
+            <p className="text-foreground/85 font-normal text-sm leading-relaxed mb-6">
               Découvrez nos dômes transparents haut de gamme et transformez vos espaces en expériences inoubliables.
             </p>
 
@@ -75,7 +75,7 @@ const WelcomeBanner = () => {
               whileTap={{ scale: 0.97 }}
               onClick={dismiss}
             >
-              Demander un devis
+              Imaginons votre projet
               <ArrowRight className="w-4 h-4" />
             </motion.a>
           </motion.div>

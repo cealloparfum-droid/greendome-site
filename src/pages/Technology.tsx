@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ShieldCheck, Sun, Wind, Thermometer, Weight, DoorOpen } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import Footer from "@/components/Footer";
 import AnimatedImage from "@/components/AnimatedImage";
 import techImg from "@/assets/dome-logo.png";
@@ -9,13 +10,18 @@ import weatherImg from "@/assets/dome-aurore.png";
 const specs = [
   { icon: ShieldCheck, label: "Résistance aux chocs", value: "Supérieure au verre trempé" },
   { icon: Sun, label: "Protection UV", value: "99,9 % bloqués" },
-  { icon: Thermometer, label: "Plage thermique", value: "-40°C à +120°C" },
+  { icon: Thermometer, label: "Plage thermique", value: "-40 °C à +120 °C" },
   { icon: Wind, label: "Étanchéité", value: "Vent & pluie" },
   { icon: Weight, label: "Poids", value: "2× plus léger que le verre" },
   { icon: DoorOpen, label: "Équipements", value: "Portes, serrures, ventilation" },
 ];
 
 const TechnologyPage = () => {
+  usePageMeta({
+    title: "Technologie",
+    description: "Toiles techniques, vitrages panoramiques, structures certifiées vent et neige. Le savoir-faire Greendome détaillé.",
+    path: "/technologie",
+  });
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -28,7 +34,7 @@ const TechnologyPage = () => {
               Technologie &{" "}
               <span className="text-gradient-gold italic">Matériaux</span>
             </h1>
-            <p className="max-w-2xl mx-auto text-foreground/60 text-lg font-light">
+            <p className="max-w-2xl mx-auto text-foreground/85 text-lg font-normal">
               L'ingénierie au service du confort et de la sécurité
             </p>
           </motion.div>
@@ -44,8 +50,8 @@ const TechnologyPage = () => {
                 Polycarbonate{" "}
                 <span className="text-gradient-gold italic">haute performance</span>
               </h2>
-              <p className="text-foreground/70 font-light leading-relaxed text-lg">
-                La sécurité et la durabilité sont au cœur de notre conception. Nos bulles sont fabriquées à partir de feuilles de polycarbonate (PC) d'ingénierie à haute performance, un matériau importé reconnu pour sa robustesse exceptionnelle. Sa résistance aux chocs dépasse de plusieurs fois celle du verre trempé ou de l'acrylique ; il s'agit de la même matière utilisée pour concevoir des vitres pare-balles ou des boucliers anti-émeute. Bien qu'il soit ultra-résistant, ce matériau est deux fois plus léger que le verre, ce qui facilite grandement le transport et l'installation sur vos sites.
+              <p className="text-foreground/85 font-normal leading-relaxed text-lg">
+                La sécurité et la durabilité sont au cœur de notre conception. Nos bulles sont fabriquées à partir de feuilles de polycarbonate (PC) d'ingénierie haute performance, reconnu pour sa robustesse exceptionnelle. Sa résistance aux chocs dépasse de plusieurs fois celle du verre trempé ou de l'acrylique — c'est le même matériau employé pour les vitrages de sécurité haut de gamme. Et malgré sa résistance, il reste deux fois plus léger que le verre, ce qui facilite considérablement le transport et l'installation sur site.
               </p>
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }}>
@@ -87,8 +93,8 @@ const TechnologyPage = () => {
                 Confort{" "}
                 <span className="text-gradient-gold italic">toutes saisons</span>
               </h2>
-              <p className="text-foreground/70 font-light leading-relaxed text-lg">
-                Le confort de vos visiteurs est garanti par une conception thermique et protectrice de pointe. Le polycarbonate utilisé bloque 99,9 % des rayons UV, protégeant ainsi l'intérieur tout en conservant une transparence parfaite. Conçues pour résister aux intempéries, nos structures sont étanches au vent et à la pluie, et peuvent supporter des températures extrêmes allant de -40°C à 120°C. Enfin, chaque dôme est équipé d'une base en aluminium solide, de portes avec serrures et d'un système de circulation d'air frais intégré pour un bien-être absolu.
+              <p className="text-foreground/85 font-normal leading-relaxed text-lg">
+                Le confort de vos visiteurs est garanti par une conception thermique et protectrice de pointe. Notre polycarbonate bloque 99,9 % des rayons UV tout en conservant une transparence parfaite. Étanches au vent et à la pluie, nos structures supportent des températures extrêmes, de -40 °C à +120 °C. Chaque dôme est équipé d'une base en aluminium solide, de portes avec serrures et d'un système de circulation d'air frais intégré pour un bien-être absolu, en toutes saisons.
               </p>
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }} className="md:order-1">

@@ -1,8 +1,15 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 const NotFound = () => {
   const location = useLocation();
+
+  usePageMeta({
+    title: "Page introuvable",
+    description: "Cette page n'existe pas. Revenez à l'accueil ou explorez nos dômes, jacuzzis et maisons en kit.",
+    path: "/404",
+  });
 
   useEffect(() => {
     console.error("404 Error: User attempted to access non-existent route:", location.pathname);

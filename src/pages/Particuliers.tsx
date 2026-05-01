@@ -1,12 +1,18 @@
 import { motion } from "framer-motion";
 import { Home, Star, Users, TreePine, Moon, Coffee } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import Footer from "@/components/Footer";
 import AnimatedImage from "@/components/AnimatedImage";
 import gardenImg from "@/assets/dome-desert.png";
 import starsImg from "@/assets/dome-etoiles.png";
 
 const ParticuliersPage = () => {
+  usePageMeta({
+    title: "Particuliers",
+    description: "Sublimez votre jardin avec un dôme transparent ou un jacuzzi signature. Conseil sur-mesure pour résidences privées.",
+    path: "/particuliers",
+  });
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -19,7 +25,7 @@ const ParticuliersPage = () => {
               Solutions pour les{" "}
               <span className="text-gradient-gold italic">Particuliers</span>
             </h1>
-            <p className="max-w-2xl mx-auto text-foreground/60 text-lg font-light">
+            <p className="max-w-2xl mx-auto text-foreground/85 text-lg font-normal">
               Votre sanctuaire privé, directement chez vous
             </p>
           </motion.div>
@@ -39,8 +45,8 @@ const ParticuliersPage = () => {
                 Votre{" "}
                 <span className="text-gradient-gold italic">sanctuaire privé</span>
               </h2>
-              <p className="text-foreground/70 font-light leading-relaxed text-lg mb-8">
-                Transformez votre extérieur en un véritable sanctuaire privé. Nos maisons dômes transparentes ne sont pas exclusivement réservées aux professionnels ; elles s'intègrent parfaitement dans les jardins, les villas, les fermes rénovées ou sur les grandes terrasses. C'est la solution idéale pour créer un paradis isolé permettant d'échapper à l'agitation de la ville, un espace apaisant pour retrouver la paix intérieure directement chez soi.
+              <p className="text-foreground/85 font-normal leading-relaxed text-lg mb-8">
+                Transformez votre extérieur en un véritable sanctuaire privé. Nos maisons-dômes transparentes ne sont pas réservées aux professionnels : elles s'intègrent parfaitement dans les jardins, les villas, les fermes rénovées ou sur les grandes terrasses. La solution idéale pour créer un havre de paix, à l'écart de l'agitation, et retrouver la sérénité chez soi.
               </p>
               <div className="flex flex-wrap gap-4">
                 <motion.div className="flex items-center gap-2 surface-glass px-4 py-2 rounded-sm" whileHover={{ scale: 1.05, y: -2 }}>
@@ -73,8 +79,8 @@ const ParticuliersPage = () => {
                 Dormez sous{" "}
                 <span className="text-gradient-gold italic">les étoiles</span>
               </h2>
-              <p className="text-foreground/70 font-light leading-relaxed text-lg mb-8">
-                Imaginez une pièce de vie supplémentaire où vous pouvez regarder les nuages défiler le jour, et observer les étoiles ou la lumière de la lune la nuit. Nos modèles plus compacts, conçus pour accueillir confortablement de 2 à 6 personnes, sont parfaits pour aménager un salon de thé extérieur, un jardin d'hiver ou une chambre d'amis atypique pour s'endormir sous un morceau de ciel étoilé. C'est une façon unique de redéfinir votre demeure idéale en recréant un lien profond entre vous et la nature.
+              <p className="text-foreground/85 font-normal leading-relaxed text-lg mb-8">
+                Imaginez une pièce de vie supplémentaire où l'on regarde les nuages défiler le jour, puis les étoiles et la lune la nuit. Nos modèles compacts, conçus pour 2 à 6 personnes, sont parfaits pour aménager un salon de thé extérieur, un jardin d'hiver ou une chambre d'amis atypique — pour s'endormir sous un morceau de ciel étoilé. Une façon unique de réinventer votre lieu de vie, en renouant un lien profond avec la nature.
               </p>
               <div className="flex flex-wrap gap-4">
                 <motion.div className="flex items-center gap-2 surface-glass px-4 py-2 rounded-sm" whileHover={{ scale: 1.05, y: -2 }}>

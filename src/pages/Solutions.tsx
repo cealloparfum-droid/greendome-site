@@ -1,12 +1,18 @@
 import { motion } from "framer-motion";
 import { BedDouble, Utensils, Ruler, Users, Lightbulb, Link } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import Footer from "@/components/Footer";
 import AnimatedImage from "@/components/AnimatedImage";
 import glampingImg from "@/assets/dome-plage.png";
 import eventImg from "@/assets/dome-maldives.png";
 
 const SolutionsPage = () => {
+  usePageMeta({
+    title: "Solutions Pro",
+    description: "Pour hôtels, restaurants et événementiel : suites glamping, espaces repas, lounges réception. Pensé pour les professionnels.",
+    path: "/solutions",
+  });
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -19,7 +25,7 @@ const SolutionsPage = () => {
               Nos Solutions{" "}
               <span className="text-gradient-gold italic">Professionnelles</span>
             </h1>
-            <p className="max-w-2xl mx-auto text-foreground/60 text-lg font-light">
+            <p className="max-w-2xl mx-auto text-foreground/85 text-lg font-normal">
               Des dômes adaptés à chaque secteur d'activité
             </p>
           </motion.div>
@@ -39,8 +45,8 @@ const SolutionsPage = () => {
                 Réinventez la{" "}
                 <span className="text-gradient-gold italic">chambre d'hôtes</span>
               </h2>
-              <p className="text-foreground/70 font-light leading-relaxed text-lg mb-8">
-                Pour le secteur de l'hôtellerie de plein air, des campings et des villages vacances, nos dômes réinventent la chambre d'hôtes. Nous proposons des modèles allant jusqu'à 5,92 mètres de diamètre, ainsi que des systèmes combinés astucieux. Ces derniers relient une grande bulle principale, servant de chambre spacieuse, à une bulle secondaire dédiée à la salle de bain, créant ainsi une suite luxueuse et totalement autonome. C'est un moyen exclusif d'offrir à vos clients un refuge paisible pour échapper à l'agitation urbaine.
+              <p className="text-foreground/85 font-normal leading-relaxed text-lg mb-8">
+                Pour le secteur de l'hôtellerie de plein air, des campings et des villages vacances, nos dômes réinventent la chambre d'hôtes. Nous proposons des modèles allant jusqu'à 5,92 mètres de diamètre, ainsi que des systèmes combinés astucieux : une grande bulle principale en chambre spacieuse, reliée à une bulle secondaire dédiée à la salle de bain, pour une suite luxueuse et totalement autonome. Une façon unique d'offrir à vos clients un refuge paisible, loin de l'agitation du quotidien.
               </p>
               <div className="flex flex-wrap gap-4">
                 <motion.div className="flex items-center gap-2 surface-glass px-4 py-2 rounded-sm" whileHover={{ scale: 1.05, y: -2 }}>
@@ -73,8 +79,8 @@ const SolutionsPage = () => {
                 Créez{" "}
                 <span className="text-gradient-gold italic">l'événement</span>
               </h2>
-              <p className="text-foreground/70 font-light leading-relaxed text-lg mb-8">
-                Pour le monde de l'événementiel, des salons professionnels et de la restauration, nos structures créent l'événement. Nos grands modèles à toit ovale peuvent s'étendre jusqu'à 7,35 mètres de long et accueillir jusqu'à 32 convives confortablement. Équipés de bandes lumineuses LED dissimulées, ils se transforment à la nuit tombée en de magnifiques points de rassemblement lumineux. C'est la solution idéale pour concevoir un "Starlight Restaurant" ou un espace de réception VIP qui marquera les esprits.
+              <p className="text-foreground/85 font-normal leading-relaxed text-lg mb-8">
+                Pour le monde de l'événementiel, des salons professionnels et de la restauration, nos structures créent l'événement. Nos grands modèles à toit ovale s'étendent jusqu'à 7,35 mètres de long et accueillent confortablement jusqu'à 32 convives. Équipés de bandes lumineuses LED dissimulées, ils se transforment à la nuit tombée en magnifiques points de rassemblement. La solution idéale pour concevoir un « restaurant sous les étoiles » ou un espace de réception VIP qui marquera les esprits.
               </p>
               <div className="flex flex-wrap gap-4">
                 <motion.div className="flex items-center gap-2 surface-glass px-4 py-2 rounded-sm" whileHover={{ scale: 1.05, y: -2 }}>

@@ -15,61 +15,121 @@ import {
   Home,
   Trees,
   Palette,
+  Crown,
+  PartyPopper,
+  Globe2,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import Footer from "@/components/Footer";
 import AnimatedImage from "@/components/AnimatedImage";
+import GoldParticles from "@/components/GoldParticles";
+import Marquee from "@/components/Marquee";
+import Magnetic from "@/components/Magnetic";
+import inventory from "@/data/maisons-kit-inventory.json";
 
-import woodDomeSnow from "@/assets/kit-wood-dome-snow.jpg";
-import whiteDomeMeadow from "@/assets/kit-white-dome-meadow.jpg";
-import whiteDomeSki from "@/assets/kit-white-dome-ski.jpg";
-import lodgeMountain from "@/assets/kit-lodge-mountain.jpg";
+/* ------------------------------------------------------------------
+ * Image loader
+ * Vite charge automatiquement toutes les images du dossier maisons-kit.
+ * On peut ensuite les référencer par leur nom (ex: "1.jpeg").
+ * ------------------------------------------------------------------ */
+const imageModules = import.meta.glob(
+  "@/assets/maisons-kit/*.jpeg",
+  { eager: true, query: "?url", import: "default" }
+) as Record<string, string>;
 
-const series = [
+const getImg = (filename: string): string => {
+  const entry = Object.entries(imageModules).find(([key]) =>
+    key.endsWith(`/${filename}`)
+  );
+  return entry?.[1] ?? "";
+};
+
+/* ------------------------------------------------------------------
+ * Données des 4 familles — basées sur l'inventaire JSON
+ * Chaque famille = titre + description + image hero + galerie + specs
+ * ------------------------------------------------------------------ */
+const ICON_MAP = {
+  Crown,
+  Trees,
+  Globe2,
+  PartyPopper,
+} as const;
+
+type FamilyKey = keyof typeof inventory.families;
+
+const familyConfig: Record<
+  FamilyKey,
   {
-    tag: "Série Dôme",
-    image: whiteDomeMeadow,
-    title: "Dôme géodésique",
-    subtitle: "La structure emblématique",
-    description:
-      "Des sphères géodésiques de 3 à 40 mètres de diamètre, personnalisables en dimensions, coloris et configuration. Parfaites pour l'hôtellerie de plein air, le glamping haut de gamme ou les résidences secondaires d'exception.",
+    icon: keyof typeof ICON_MAP;
+    heroImage: string;
+    galleryImages: string[];
+    specs: { label: string; value: string }[];
+  }
+> = {
+  pavillons: {
+    icon: "Crown",
+    heroImage: "35.jpeg",
+    galleryImages: ["1.jpeg", "20.jpeg", "32.jpeg", "36.jpeg", "4.jpeg", "8.jpeg"],
+    specs: [
+      { label: "Surface utile", value: "30 à 500 m²" },
+      { label: "Hauteur", value: "Jusqu'à 6 m" },
+      { label: "Structure", value: "Acier galvanisé + bois" },
+      { label: "Toile", value: "PVC 1050 g/m² tendue" },
+    ],
+  },
+  safari: {
+    icon: "Trees",
+    heroImage: "17.jpeg",
+    galleryImages: [
+      "30.jpeg",
+      "13.jpeg",
+      "19.jpeg",
+      "31.jpeg",
+      "27.jpeg",
+      "34.jpeg",
+    ],
+    specs: [
+      { label: "Surface utile", value: "20 à 80 m²" },
+      { label: "Configurations", value: "1 à 3 chambres" },
+      { label: "Structure", value: "Bois + acier galvanisé" },
+      { label: "Toile", value: "Toile 900D + PVC 850 g" },
+    ],
+  },
+  domes: {
+    icon: "Globe2",
+    heroImage: "12.jpeg",
+    galleryImages: ["6.jpeg", "3.jpeg", "14.jpeg", "29.jpeg", "40.jpeg", "39.jpeg"],
     specs: [
       { label: "Diamètre", value: "3 à 40 m" },
       { label: "Surface utile", value: "Jusqu'à 1 250 m²" },
-      { label: "Structure", value: "Acier galvanisé thermolaqué" },
-      { label: "Toile", value: "Membrane PVC tendue 1050 g/m²" },
+      { label: "Toile", value: "Membrane PVC 1050 g/m²" },
+      { label: "Vitrages", value: "Façades verre trempé" },
     ],
   },
-  {
-    tag: "Série Lodge",
-    image: lodgeMountain,
-    title: "Lodge & Pavillons",
-    subtitle: "Le raffinement hôtelier",
-    description:
-      "Structures à toiture pyramidale ou polygonale, de 6 à 34 mètres. Idéales pour les suites de luxe, les restaurants panoramiques ou les espaces de réception. Douze modèles déclinables, tous personnalisables.",
+  evenementiel: {
+    icon: "PartyPopper",
+    heroImage: "9.jpeg",
+    galleryImages: ["10.jpeg", "5.jpeg", "7.jpeg", "24.jpeg"],
     specs: [
-      { label: "Dimensions", value: "6 × 6 m à 16,6 × 34,5 m" },
-      { label: "Surface utile", value: "37 à 573 m²" },
-      { label: "Hauteur intérieure", value: "2,5 à 3,1 m" },
-      { label: "Matériaux", value: "PVC 1050 g + doublage 850 g" },
+      { label: "Capacité", value: "20 à 300 convives" },
+      { label: "Dimensions", value: "6 × 6 m à 20 × 20 m" },
+      { label: "Montage", value: "1 à 3 jours" },
+      { label: "Usage", value: "Saisonnier ou permanent" },
     ],
   },
-  {
-    tag: "Série Safari",
-    image: whiteDomeSki,
-    title: "Safari & Nomade",
-    subtitle: "L'évasion authentique",
-    description:
-      "Tentes safari et structures nomades inspirées du glamping africain — toile toilée, bois brut, esthétique affirmée. Douze modèles conçus pour l'immersion en nature, sans compromis sur le confort.",
-    specs: [
-      { label: "Dimensions", value: "3 × 3,7 m à 5 × 7 m" },
-      { label: "Surface utile", value: "Jusqu'à 45 m²" },
-      { label: "Structure", value: "Acier galvanisé + bois traité" },
-      { label: "Toile", value: "Toile 900D PEVA + PVC 850 g" },
-    ],
-  },
-];
+};
 
+const families = (
+  Object.keys(inventory.families) as FamilyKey[]
+).map((key) => ({
+  ...inventory.families[key],
+  ...familyConfig[key],
+}));
+
+/* ------------------------------------------------------------------
+ * Matériaux & features (inchangés — qualité Greendome)
+ * ------------------------------------------------------------------ */
 const materials = [
   {
     icon: Shield,
@@ -104,29 +164,37 @@ const features = [
 
 const applications = [
   {
-    title: "Hôtellerie de plein air",
-    text: "Campings premium, resorts, villages vacances. Des unités modulaires pour multiplier votre offre d'hébergement sans permis lourd.",
+    title: "Jardins & résidences privées",
+    text: "Pool-house, suite d'invités, bureau de jardin, atelier d'artiste. Une pièce supplémentaire qui devient la signature de votre lieu.",
   },
   {
-    title: "Résidences d'exception",
-    text: "Chalets de montagne, pool-houses, bureaux de jardin, suites indépendantes pour propriétés privées à fort caractère.",
+    title: "Mariages & réceptions",
+    text: "Pavillons de cérémonie, espaces lounge, dîners de prestige — pour vos moments rares, un cadre qui marque les esprits.",
   },
   {
-    title: "Événementiel & restauration",
-    text: "Restaurants panoramiques, salles de réception, pavillons de mariage, espaces VIP saisonniers pouvant accueillir jusqu'à 300 convives.",
+    title: "Hôtellerie & glamping",
+    text: "Campings premium, resorts, éco-lodges. Des unités modulaires pour multiplier votre offre d'hébergement sans permis lourd.",
   },
   {
-    title: "Tourisme nature",
-    text: "Éco-lodges, refuges, expériences glamping. Une empreinte minimale pour une expérience maximale.",
+    title: "Restauration & lieux d'accueil",
+    text: "Restaurants panoramiques, terrasses couvertes, lounges saisonniers — jusqu'à 300 convives sous une toile d'exception.",
   },
 ];
 
+/* ------------------------------------------------------------------
+ * Page principale
+ * ------------------------------------------------------------------ */
 const MaisonsEnKitPage = () => {
+  usePageMeta({
+    title: "Maisons en kit",
+    description: "39 modèles : pavillons, lodges safari, dômes géodésiques, tipis. De 2 à 32 personnes, livraison dans plus de 20 pays.",
+    path: "/maisons-en-kit",
+  });
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Hero */}
+      {/* ============== HERO ============== */}
       <section className="relative min-h-[95vh] flex items-center justify-center overflow-hidden pt-20">
         <motion.div
           initial={{ scale: 1.15, opacity: 0 }}
@@ -135,13 +203,16 @@ const MaisonsEnKitPage = () => {
           className="absolute inset-0"
         >
           <img
-            src={woodDomeSnow}
-            alt="Dôme bois haut de gamme en montagne enneigée"
+            src={getImg("35.jpeg")}
+            alt="Pavillon double-pic vue mer méditerranée au coucher du soleil"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/55 via-background/25 to-background" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/50 via-transparent to-background/30" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/30 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-background/30" />
         </motion.div>
+
+        {/* Poussière d'or — flottement subtil */}
+        <GoldParticles density={35} speed={-0.1} maxOpacity={0.5} />
 
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -159,10 +230,10 @@ const MaisonsEnKitPage = () => {
             <br />
             autrement
           </h1>
-          <p className="max-w-2xl mx-auto text-foreground/75 text-lg md:text-xl font-light leading-relaxed">
-            Une gamme complète de structures modulaires haut de gamme —
-            dômes géodésiques, lodges, tentes safari. Conçues pour durer,
-            taillées pour émerveiller.
+          <p className="max-w-2xl mx-auto text-foreground/75 text-lg md:text-xl font-normal leading-relaxed">
+            Pavillons, lodges, dômes &amp; tentes d'exception.
+            <br className="hidden md:block" />
+            Pour votre jardin, votre domaine ou votre établissement.
           </p>
         </motion.div>
 
@@ -182,7 +253,7 @@ const MaisonsEnKitPage = () => {
         </motion.div>
       </section>
 
-      {/* Intro */}
+      {/* ============== INTRO ============== */}
       <section className="py-24 md:py-32">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
@@ -202,17 +273,16 @@ const MaisonsEnKitPage = () => {
                   qui font rêver
                 </span>
               </h2>
-              <p className="text-foreground/70 font-light leading-relaxed text-lg mb-6">
-                Après dix ans d'expertise dans les dômes transparents,
-                Greendome élargit son offre avec une gamme de maisons en kit
-                haut de gamme. Cinq séries, plus de quarante modèles, toutes
-                personnalisables en dimensions, matières et finitions.
+              <p className="text-foreground/85 font-normal leading-relaxed text-lg mb-4">
+                Quatre familles, plus de quarante modèles. Du pavillon intime
+                au lodge de cinq cents mètres carrés — chaque structure se
+                configure en dimensions, toiles et finitions.
               </p>
-              <p className="text-foreground/70 font-light leading-relaxed text-lg">
-                Chaque structure est pensée pour un montage rapide, une
-                durabilité exceptionnelle et une intégration respectueuse de
-                l'environnement naturel. Du pavillon intime de trois mètres
-                au lodge de réception de cinq cents mètres carrés.
+              <p className="text-foreground/85 font-normal leading-relaxed text-lg">
+                <span className="text-foreground/95">Pour les particuliers</span> qui veulent réinventer
+                leur jardin, leur résidence secondaire ou leur lieu de réception privé.
+                <span className="text-foreground/95"> Pour les professionnels</span> de l'hôtellerie,
+                de la restauration et du tourisme qui cherchent une signature forte.
               </p>
             </motion.div>
 
@@ -223,20 +293,20 @@ const MaisonsEnKitPage = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               <AnimatedImage
-                src={whiteDomeMeadow}
-                alt="Dôme géodésique dans une prairie alpine"
+                src={getImg("25.jpeg")}
+                alt="Dôme arche au bord d'un lac en prairie au coucher du soleil"
               />
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Specs ribbon */}
+      {/* ============== SPECS RIBBON ============== */}
       <section className="py-16 md:py-20 border-y border-border/40 bg-card/30">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { icon: Home, label: "Séries", value: "5 collections" },
+              { icon: Home, label: "Familles", value: "4 collections" },
               { icon: Ruler, label: "Diamètre", value: "3 à 40 m" },
               { icon: Users, label: "Capacité", value: "2 à 300 pers." },
               { icon: Wrench, label: "Garantie", value: "10 à 20 ans" },
@@ -262,7 +332,21 @@ const MaisonsEnKitPage = () => {
         </div>
       </section>
 
-      {/* Series — alternating image/text */}
+      {/* ============== MARQUEE SIGNATURE ============== */}
+      <Marquee
+        items={[
+          "Architecture nomade",
+          "Sur-mesure intégral",
+          "Quatre saisons",
+          "Depuis 2018",
+          "Artisanat français",
+          "Garantie 10–20 ans",
+        ]}
+        duration={50}
+        variant="subtle"
+      />
+
+      {/* ============== 4 FAMILLES — alternating image/text + galerie ============== */}
       <section className="py-24 md:py-32">
         <div className="container mx-auto px-6">
           <motion.div
@@ -274,79 +358,134 @@ const MaisonsEnKitPage = () => {
           >
             <div className="divider-gold mb-6" />
             <p className="text-sm text-primary tracking-[0.3em] uppercase font-semibold mb-4">
-              Les trois collections phares
+              Les quatre collections
             </p>
             <h2 className="text-4xl md:text-6xl font-bold mb-6">
               Une gamme,{" "}
-              <span className="text-gradient-gold italic">
-                mille possibles
-              </span>
+              <span className="text-gradient-gold italic">mille possibles</span>
             </h2>
-            <p className="max-w-2xl mx-auto text-foreground/60 text-lg font-light">
-              De la sphère géodésique au lodge pyramidal, chaque structure
+            <p className="max-w-2xl mx-auto text-foreground/85 text-lg font-normal">
+              De la sphère géodésique au pavillon de réception, chaque famille
               signe une identité.
             </p>
           </motion.div>
 
-          <div className="space-y-24 md:space-y-32">
-            {series.map((s, i) => (
-              <div
-                key={s.title}
-                className="grid md:grid-cols-2 gap-12 md:gap-20 items-center"
-              >
-                <motion.div
-                  initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8 }}
-                  className={i % 2 === 1 ? "md:order-2" : ""}
-                >
-                  <AnimatedImage src={s.image} alt={s.title} />
-                </motion.div>
+          <div className="space-y-32 md:space-y-40">
+            {families.map((f, i) => {
+              const FamilyIcon = ICON_MAP[f.icon];
+              return (
+                <div key={f.id} className="space-y-12">
+                  {/* hero image + texte alternés */}
+                  <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+                    <motion.div
+                      initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.8 }}
+                      className={i % 2 === 1 ? "md:order-2" : ""}
+                    >
+                      <AnimatedImage
+                        src={getImg(f.heroImage)}
+                        alt={f.title}
+                      />
+                    </motion.div>
 
-                <motion.div
-                  initial={{ opacity: 0, x: i % 2 === 0 ? 30 : -30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  className={i % 2 === 1 ? "md:order-1" : ""}
-                >
-                  <div className="divider-gold !mx-0 mb-6" />
-                  <p className="text-xs text-primary tracking-[0.3em] uppercase font-semibold mb-3">
-                    {s.tag}
-                  </p>
-                  <h3 className="text-3xl md:text-5xl font-bold leading-tight mb-3">
-                    {s.title}
-                  </h3>
-                  <p className="text-lg md:text-xl text-foreground/70 font-light italic mb-6">
-                    {s.subtitle}
-                  </p>
-                  <p className="text-foreground/70 font-light leading-relaxed text-lg mb-8">
-                    {s.description}
-                  </p>
-                  <div className="grid grid-cols-2 gap-4">
-                    {s.specs.map((sp) => (
-                      <div
-                        key={sp.label}
-                        className="surface-glass p-4 rounded-sm border border-border/40"
-                      >
-                        <p className="text-[10px] text-muted-foreground tracking-[0.2em] uppercase mb-1">
-                          {sp.label}
-                        </p>
-                        <p className="text-sm text-foreground/85 font-display">
-                          {sp.value}
+                    <motion.div
+                      initial={{ opacity: 0, x: i % 2 === 0 ? 30 : -30 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.8, delay: 0.2 }}
+                      className={i % 2 === 1 ? "md:order-1" : ""}
+                    >
+                      <div className="divider-gold !mx-0 mb-6" />
+                      <div className="flex items-center gap-3 mb-3">
+                        <FamilyIcon className="w-5 h-5 text-primary" />
+                        <p className="text-xs text-primary tracking-[0.3em] uppercase font-semibold">
+                          {f.tag}
                         </p>
                       </div>
-                    ))}
+                      <h3 className="text-3xl md:text-5xl font-bold leading-tight mb-3">
+                        {f.title}
+                      </h3>
+                      <p className="text-lg md:text-xl text-foreground/85 font-light italic mb-6">
+                        {f.subtitle}
+                      </p>
+                      <p className="text-foreground/85 font-normal leading-relaxed text-lg mb-8">
+                        {f.description}
+                      </p>
+                      <div className="grid grid-cols-2 gap-4">
+                        {f.specs.map((sp) => (
+                          <div
+                            key={sp.label}
+                            className="surface-glass p-4 rounded-sm border border-border/40"
+                          >
+                            <p className="text-[10px] text-muted-foreground tracking-[0.2em] uppercase mb-1">
+                              {sp.label}
+                            </p>
+                            <p className="text-sm text-foreground/85 font-display">
+                              {sp.value}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
                   </div>
-                </motion.div>
-              </div>
-            ))}
+
+                  {/* galerie complète — tous les modèles */}
+                  <div>
+                    <div className="flex items-center justify-between mb-6">
+                      <p className="text-xs text-muted-foreground tracking-[0.3em] uppercase">
+                        Galerie complète — {f.count} modèles
+                      </p>
+                      <div className="hidden md:block flex-1 h-px bg-border/40 mx-6" />
+                      <p className="text-xs text-primary tracking-[0.3em] uppercase font-semibold">
+                        {f.tag}
+                      </p>
+                    </div>
+                    <motion.div
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.8 }}
+                      className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5"
+                    >
+                      {f.images.map((imgData, j) => (
+                        <motion.div
+                          key={imgData.src}
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          viewport={{ once: true, margin: "-50px" }}
+                          transition={{ duration: 0.5, delay: (j % 4) * 0.06 }}
+                          whileHover={{ y: -4 }}
+                          className="group relative overflow-hidden rounded-sm border border-border/30 aspect-[4/3]"
+                        >
+                          <img
+                            src={getImg(imgData.src)}
+                            alt={imgData.caption}
+                            loading="lazy"
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                          <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4 translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                            <p className="text-[10px] md:text-xs text-primary tracking-[0.2em] uppercase mb-1 font-semibold">
+                              {imgData.context}
+                            </p>
+                            <p className="text-xs md:text-sm text-foreground/90 font-normal leading-snug">
+                              {imgData.caption}
+                            </p>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* Fullwidth parallax */}
+      {/* ============== PARALLAXE PLEINE LARGEUR ============== */}
       <section className="relative h-[70vh] md:h-[80vh] overflow-hidden">
         <motion.div
           initial={{ scale: 1.1 }}
@@ -356,8 +495,8 @@ const MaisonsEnKitPage = () => {
           className="absolute inset-0"
         >
           <img
-            src={whiteDomeSki}
-            alt="Dôme en station de ski sous la neige"
+            src={getImg("33.jpeg")}
+            alt="Tente safari pyramidale dans la savane au crépuscule"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-background/20" />
@@ -377,15 +516,15 @@ const MaisonsEnKitPage = () => {
               Conçues pour{" "}
               <span className="text-gradient-gold italic">tout climat</span>
             </h2>
-            <p className="max-w-xl mx-auto text-foreground/75 text-lg font-light leading-relaxed italic">
-              « De la canicule estivale aux tempêtes de neige alpines —
-              nos structures traversent les saisons sans jamais s'altérer. »
+            <p className="max-w-xl mx-auto text-foreground/75 text-lg font-normal leading-relaxed italic">
+              « De la canicule estivale aux blizzards alpins —
+              nos structures traversent les saisons sans jamais s'altérer. »
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Materials */}
+      {/* ============== MATÉRIAUX ============== */}
       <section className="py-24 md:py-32 bg-card/20 border-y border-border/40">
         <div className="container mx-auto px-6">
           <motion.div
@@ -403,9 +542,8 @@ const MaisonsEnKitPage = () => {
               Une exigence{" "}
               <span className="text-gradient-gold italic">de durabilité</span>
             </h2>
-            <p className="max-w-2xl mx-auto text-foreground/60 text-lg font-light">
-              Chaque composant est sélectionné pour son endurance, sa
-              résistance aux éléments et son impact environnemental minimal.
+            <p className="max-w-2xl mx-auto text-foreground/85 text-lg font-normal">
+              Endurance, résistance aux éléments, empreinte minimale.
             </p>
           </motion.div>
 
@@ -426,7 +564,7 @@ const MaisonsEnKitPage = () => {
                 <h3 className="text-lg font-bold mb-3 leading-tight">
                   {m.title}
                 </h3>
-                <p className="text-foreground/60 font-light leading-relaxed text-sm">
+                <p className="text-foreground/75 font-normal leading-relaxed text-sm">
                   {m.text}
                 </p>
               </motion.div>
@@ -461,7 +599,7 @@ const MaisonsEnKitPage = () => {
         </div>
       </section>
 
-      {/* Applications */}
+      {/* ============== APPLICATIONS ============== */}
       <section className="py-24 md:py-32">
         <div className="container mx-auto px-6">
           <motion.div
@@ -473,11 +611,11 @@ const MaisonsEnKitPage = () => {
           >
             <div className="divider-gold mb-6" />
             <p className="text-sm text-primary tracking-[0.3em] uppercase font-semibold mb-4">
-              Tous les projets
+              Pour qui, pour quoi
             </p>
             <h2 className="text-4xl md:text-6xl font-bold mb-6">
-              Quatre univers,{" "}
-              <span className="text-gradient-gold italic">mille usages</span>
+              Particuliers{" "}
+              <span className="text-gradient-gold italic">&amp; professionnels</span>
             </h2>
           </motion.div>
 
@@ -496,7 +634,7 @@ const MaisonsEnKitPage = () => {
                 <h3 className="text-2xl md:text-3xl font-bold mb-4">
                   {a.title}
                 </h3>
-                <p className="text-foreground/65 font-light leading-relaxed text-base">
+                <p className="text-foreground/80 font-normal leading-relaxed text-base">
                   {a.text}
                 </p>
               </motion.div>
@@ -505,7 +643,7 @@ const MaisonsEnKitPage = () => {
         </div>
       </section>
 
-      {/* Customization */}
+      {/* ============== PERSONNALISATION ============== */}
       <section className="py-24 md:py-32 bg-card/20 border-y border-border/40">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
@@ -516,8 +654,8 @@ const MaisonsEnKitPage = () => {
               transition={{ duration: 0.8 }}
             >
               <AnimatedImage
-                src={lodgeMountain}
-                alt="Lodge pyramidal haut de gamme en montagne"
+                src={getImg("28.jpeg")}
+                alt="Lodge architectural minimaliste sur falaise"
               />
             </motion.div>
             <motion.div
@@ -536,11 +674,10 @@ const MaisonsEnKitPage = () => {
                   votre signature
                 </span>
               </h2>
-              <p className="text-foreground/70 font-light leading-relaxed text-lg mb-8">
-                Dimensions, toiles, menuiseries, coloris, aménagements
-                intérieurs : tout se configure. Notre bureau d'études conçoit
-                des modèles 3D avant production, pour valider votre vision
-                avant le moindre coup de marteau.
+              <p className="text-foreground/85 font-normal leading-relaxed text-lg mb-8">
+                Dimensions, toiles, menuiseries, coloris, aménagements —
+                tout se configure. Notre bureau d'études modélise votre projet
+                en 3D avant production. Vous validez, nous fabriquons.
               </p>
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
@@ -549,7 +686,7 @@ const MaisonsEnKitPage = () => {
                     <p className="text-sm font-semibold text-foreground/90 mb-1">
                       Dimensions à la carte
                     </p>
-                    <p className="text-sm text-foreground/60 font-light">
+                    <p className="text-sm text-foreground/85 font-normal">
                       De 3 à 40 mètres, formes rondes, carrées, polygonales
                     </p>
                   </div>
@@ -560,7 +697,7 @@ const MaisonsEnKitPage = () => {
                     <p className="text-sm font-semibold text-foreground/90 mb-1">
                       Finitions personnalisées
                     </p>
-                    <p className="text-sm text-foreground/60 font-light">
+                    <p className="text-sm text-foreground/85 font-normal">
                       Toile opaque, transparente, colorée, bois naturel,
                       métal laqué
                     </p>
@@ -572,7 +709,7 @@ const MaisonsEnKitPage = () => {
                     <p className="text-sm font-semibold text-foreground/90 mb-1">
                       Visualisation 3D avant production
                     </p>
-                    <p className="text-sm text-foreground/60 font-light">
+                    <p className="text-sm text-foreground/85 font-normal">
                       Rendus photoréalistes de votre projet, par nos
                       designers
                     </p>
@@ -584,7 +721,7 @@ const MaisonsEnKitPage = () => {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* ============== CTA ============== */}
       <section className="py-24 md:py-32">
         <div className="container mx-auto px-6">
           <motion.div
@@ -599,28 +736,31 @@ const MaisonsEnKitPage = () => {
               Donnons forme{" "}
               <span className="text-gradient-gold italic">à votre projet</span>
             </h2>
-            <p className="text-foreground/70 font-light leading-relaxed text-lg mb-10">
-              Parlez-nous de votre site, de votre usage, de vos envies.
-              Notre équipe vous propose un modèle adapté, un chiffrage
-              sur-mesure et un rendu 3D du projet fini.
+            <p className="text-foreground/85 font-normal leading-relaxed text-lg mb-10">
+              Un jardin, un domaine, un établissement — racontez-nous votre lieu.
+              Modèle adapté, chiffrage sur-mesure et rendu 3D avant production.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <motion.a
-                href="/contact"
-                className="px-10 py-4 rounded-sm bg-primary text-primary-foreground text-sm font-semibold tracking-[0.2em] uppercase hover:glow-gold transition-shadow"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                Demander un devis
-              </motion.a>
-              <motion.a
-                href="/solutions"
-                className="px-10 py-4 rounded-sm border border-primary/40 text-foreground/80 text-sm font-semibold tracking-[0.2em] uppercase hover:border-primary hover:text-primary transition-colors"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                Nos solutions →
-              </motion.a>
+              <Magnetic strength={0.3} className="inline-block">
+                <motion.a
+                  href="/contact"
+                  className="inline-block px-10 py-4 rounded-sm bg-primary text-primary-foreground text-sm font-semibold tracking-[0.2em] uppercase hover:glow-gold transition-shadow"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  Imaginons votre projet
+                </motion.a>
+              </Magnetic>
+              <Magnetic strength={0.3} className="inline-block">
+                <motion.a
+                  href="/solutions"
+                  className="inline-block px-10 py-4 rounded-sm border border-primary/40 text-foreground/80 text-sm font-semibold tracking-[0.2em] uppercase hover:border-primary hover:text-primary transition-colors"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  Nos solutions →
+                </motion.a>
+              </Magnetic>
             </div>
           </motion.div>
         </div>

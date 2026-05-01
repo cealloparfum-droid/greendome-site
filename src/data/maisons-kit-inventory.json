@@ -1,0 +1,93 @@
+{
+  "_meta": {
+    "description": "Inventaire des 39 images de maisons en kit, classées en 4 familles",
+    "source": "/Users/pomme/Desktop/maison kit 2/optimized/",
+    "totalImages": 39,
+    "lastUpdated": "2026-04-28"
+  },
+  "families": {
+    "pavillons": {
+      "id": "pavillons",
+      "title": "Pavillons & Architecture",
+      "subtitle": "Élégance contemporaine, signature forte",
+      "description": "Structures architecturales pour résidences privées, jardins d'exception, hôtels et restaurants. Toiles tensionnées, multi-pics, vitrages panoramiques — une pièce maîtresse pour votre lieu.",
+      "tag": "Jardins privés & Établissements",
+      "icon": "Building2",
+      "count": 7,
+      "images": [
+        { "src": "1.jpeg", "caption": "Pavillon arches blanc en parc paysagé", "context": "Jardin résidentiel haut de gamme" },
+        { "src": "4.jpeg", "caption": "Pavillon parasol bois en jardin paysager", "context": "Lounge décoratif extérieur" },
+        { "src": "8.jpeg", "caption": "Architecture parasol géodésique en plaza", "context": "Espace public premium" },
+        { "src": "20.jpeg", "caption": "Pavillon arches en plaza corporate", "context": "Quartier d'affaires" },
+        { "src": "32.jpeg", "caption": "Pavillon multi-pics vitré jardin & piscine", "context": "Résidence de luxe" },
+        { "src": "35.jpeg", "caption": "Pavillon double-pic vue mer méditerranée", "context": "Restaurant panoramique" },
+        { "src": "36.jpeg", "caption": "Pavillon ovale en hôtel de prestige", "context": "Hôtellerie 5 étoiles" }
+      ]
+    },
+    "safari": {
+      "id": "safari",
+      "title": "Safari & Glamping",
+      "subtitle": "L'évasion en pleine nature",
+      "description": "Tentes safari et lodges pour votre terrain privé, votre éco-resort ou votre hébergement insolite. De la tente safari classique au lodge architectural avec vue panoramique — une bulle hors du temps.",
+      "tag": "Évasion & Glamping",
+      "icon": "Trees",
+      "count": 19,
+      "images": [
+        { "src": "2.jpeg", "caption": "Lodge sur ponton lac au crépuscule", "context": "Glamping bord d'eau" },
+        { "src": "11.jpeg", "caption": "Lodge tente arche tunnel premium", "context": "Glamping moderne lac" },
+        { "src": "13.jpeg", "caption": "Lodge falaise vue fjord montagneux", "context": "Glamping spectaculaire" },
+        { "src": "15.jpeg", "caption": "Tente safari sunset savane", "context": "Safari premium Afrique" },
+        { "src": "16.jpeg", "caption": "Tente glamping terrasse bois sunset lac", "context": "Tourisme nature" },
+        { "src": "17.jpeg", "caption": "Lodge safari avec girafes en savane", "context": "Eco-lodge africain" },
+        { "src": "18.jpeg", "caption": "Tente safari classique savane d'Afrique", "context": "Safari traditionnel" },
+        { "src": "19.jpeg", "caption": "Lodge premium vue rivière montagne", "context": "Refuge haut de gamme" },
+        { "src": "21.jpeg", "caption": "Lodge cream lac brumeux jardin paysagé", "context": "Hôtel boutique nature" },
+        { "src": "22.jpeg", "caption": "Tente safari traditionnelle bord de lac", "context": "Camping de luxe" },
+        { "src": "26.jpeg", "caption": "Tente safari cream campagne", "context": "Glamping bucolique" },
+        { "src": "27.jpeg", "caption": "Lodge mezzanine deux-niveaux montagne", "context": "Hébergement familial luxe" },
+        { "src": "28.jpeg", "caption": "Lodge architectural minimaliste falaise", "context": "Design contemporain" },
+        { "src": "30.jpeg", "caption": "Lodge safari deluxe terrasse lac", "context": "Suite spa nature" },
+        { "src": "31.jpeg", "caption": "Lodge safari vitré Serengeti sunset", "context": "Safari ultra-premium" },
+        { "src": "33.jpeg", "caption": "Tente safari pyramidale moderne savane", "context": "Architecture nomade" },
+        { "src": "34.jpeg", "caption": "Tente safari design cuivre savane", "context": "Glamping signature" },
+        { "src": "37.jpeg", "caption": "Lodge Serengeti premium socle pierre", "context": "Eco-lodge premium" },
+        { "src": "38.jpeg", "caption": "Lodge yourte vitrée savane sunset", "context": "Suite immersive Afrique" }
+      ]
+    },
+    "domes": {
+      "id": "domes",
+      "title": "Dômes & Formes Organiques",
+      "subtitle": "L'architecture sphérique réinventée",
+      "description": "Dômes géodésiques, sphères vitrées et formes organiques. De la villa-dôme privée au pavillon de réception, chaque pièce est une signature contemporaine — pour habiter, recevoir, exposer.",
+      "tag": "Architecture signature",
+      "icon": "Sparkles",
+      "count": 8,
+      "images": [
+        { "src": "3.jpeg", "caption": "Dôme bulle organique avec arche vitrée", "context": "Villa contemporaine" },
+        { "src": "6.jpeg", "caption": "Dôme géodésique lounge bord de lac", "context": "Espace réception design" },
+        { "src": "12.jpeg", "caption": "Villa-dôme tropicale plage paradisiaque", "context": "Résidence d'exception" },
+        { "src": "14.jpeg", "caption": "Dôme bulle façade vitrée prairie", "context": "Showroom & galerie" },
+        { "src": "25.jpeg", "caption": "Dôme arche prairie lac sunset", "context": "Refuge contemporain" },
+        { "src": "29.jpeg", "caption": "Yourte cône vitrée vue côte sauvage", "context": "Suite panoramique" },
+        { "src": "39.jpeg", "caption": "Lodge cône blanc & bois en forêt", "context": "Hébergement signature" },
+        { "src": "40.jpeg", "caption": "Lodge cône vitré crépuscule montagne", "context": "Refuge alpin premium" }
+      ]
+    },
+    "evenementiel": {
+      "id": "evenementiel",
+      "title": "Tentes Événementielles & Tipis",
+      "subtitle": "Pour vos moments d'exception",
+      "description": "Grandes structures pour mariages, anniversaires, réceptions privées et restaurants éphémères. Tentes étoiles, tipis modernes, structures de prestige — votre événement, votre cadre signature.",
+      "tag": "Mariages & Réceptions",
+      "icon": "Sparkles",
+      "count": 5,
+      "images": [
+        { "src": "5.jpeg", "caption": "Tipi tripode moderne dîner intime jardin", "context": "Événement privé" },
+        { "src": "7.jpeg", "caption": "Tipi-bar tropical bord de mer sunset", "context": "Bar d'exception" },
+        { "src": "9.jpeg", "caption": "Tente étoile double mariage manoir", "context": "Réception haut de gamme" },
+        { "src": "10.jpeg", "caption": "Grande tente scalloped sunset campagne", "context": "Mariage champêtre chic" },
+        { "src": "24.jpeg", "caption": "Tipi A-frame bois moderne lac forêt", "context": "Hébergement insolite" }
+      ]
+    }
+  }
+}

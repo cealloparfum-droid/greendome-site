@@ -2,6 +2,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import { useRef } from "react";
 import heroBg from "@/assets/dome-montagne.png";
+import GoldParticles from "./GoldParticles";
+import Magnetic from "./Magnetic";
 
 const Hero = () => {
   const ref = useRef<HTMLElement>(null);
@@ -18,6 +20,9 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/50 to-background" />
       </motion.div>
 
+      {/* Poussière d'or */}
+      <GoldParticles density={40} speed={-0.1} maxOpacity={0.55} />
+
       <motion.div className="relative z-10 container mx-auto px-6 text-center pt-20" style={{ y: textY, opacity }}>
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -33,7 +38,7 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             >
-              Une nouvelle ère de
+              L'art de recevoir,
             </motion.span>
             <motion.span
               className="block text-gradient-gold italic mt-2"
@@ -41,30 +46,32 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
             >
-              l'hospitalité
+              autrement
             </motion.span>
           </h1>
 
           <motion.p
-            className="max-w-xl mx-auto text-base md:text-lg text-foreground/70 font-light leading-relaxed mb-12"
+            className="max-w-xl mx-auto text-base md:text-lg text-foreground/85 font-normal leading-relaxed mb-12"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.7 }}
           >
-            Nous brisons les frontières architecturales traditionnelles pour recréer une connexion profonde entre l'homme et la nature.
+            Dômes transparents, jacuzzis et pavillons d'exception. Des lieux qui renouent avec la nature — pour vos clients, vos invités, ou simplement chez vous.
           </motion.p>
 
-          <motion.a
-            href="#decouvrir"
-            className="inline-flex items-center gap-2 px-10 py-4 rounded-sm bg-primary text-primary-foreground font-semibold tracking-[0.15em] uppercase text-sm transition-shadow hover:glow-gold"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.9 }}
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            Découvrir nos solutions
-          </motion.a>
+          <Magnetic strength={0.3} className="inline-block">
+            <motion.a
+              href="#decouvrir"
+              className="inline-flex items-center gap-2 px-10 py-4 rounded-sm bg-primary text-primary-foreground font-semibold tracking-[0.15em] uppercase text-sm transition-shadow hover:glow-gold"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.9 }}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              Découvrir nos solutions
+            </motion.a>
+          </Magnetic>
         </motion.div>
       </motion.div>
 
