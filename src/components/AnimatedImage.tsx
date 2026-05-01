@@ -5,8 +5,10 @@ import {
   useMotionValue,
   useSpring,
   useTransform,
+  useScroll,
 } from "framer-motion";
 import { X } from "lucide-react";
+import { useIsTouch } from "@/hooks/useIsTouch";
 
 interface AnimatedImageProps {
   src: string;
@@ -16,21 +18,32 @@ interface AnimatedImageProps {
 
 /**
  * AnimatedImage — image cinématographique avec :
- *   - Tilt 3D suivant le curseur (max 5°)
- *   - Bordure dorée qui se dessine au survol
- *   - Glare doré qui suit le pointeur
- *   - Lightbox au clic
- *   - Animation d'apparition au scroll
+ *
+ *   Desktop :
+ *     - Tilt 3D suivant le curseur (max 5°)
+ *     - Bordure dorée qui se dessine au survol
+ *     - Glare doré qui suit le pointeur
+ *
+ *   Mobile (tactile) :
+ *     - Tilt 3D piloté par le scroll (la photo "se tourne" vers nous
+ *       quand elle passe sous nos yeux)
+ *     - Glare doré qui balaie de gauche à droite avec le scroll
+ *     - Bordure dorée révélée à l'entrée dans le viewport
+ *     - Léger zoom continu (parallax interne) pour vivacité
+ *
+ *   Communs :
+ *     - Lightbox au clic / tap
+ *     - Animation d'apparition au scroll (fade + scale-in)
  */
 const AnimatedImage = ({ src, alt, className = "" }: AnimatedImageProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const isTouch = useIsTouch();
 
-  // Position normalisée [-1, 1]
+  // ─── Desktop : suit la souris ────────────────────────────────────────
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // Tilt 3D
   const rotateY = useSpring(useTransform(x, [-1, 1], [-5, 5]), {
     damping: 22,
     stiffness: 220,
@@ -42,17 +55,40 @@ const AnimatedImage = ({ src, alt, className = "" }: AnimatedImageProps) => {
     mass: 0.4,
   });
 
-  // Glare doré qui suit le curseur
   const glareX = useTransform(x, [-1, 1], [20, 80]);
   const glareY = useTransform(y, [-1, 1], [20, 80]);
-  const glareBg = useTransform(
+  const desktopGlareBg = useTransform(
     [glareX, glareY] as never,
     ([gx, gy]: number[]) =>
       `radial-gradient(circle at ${gx}% ${gy}%, hsla(40, 80%, 70%, 0.15), transparent 55%)`
   );
 
+  // ─── Mobile : piloté par le scroll ───────────────────────────────────
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  // Tilt vertical : entre par en-dessous (+4°), passe à plat (0°), sort vers le haut (-4°)
+  const scrollTilt = useSpring(
+    useTransform(scrollYProgress, [0, 0.5, 1], [4, 0, -4]),
+    { damping: 30, stiffness: 90, mass: 0.6 }
+  );
+  // Zoom interne sur l'image (effet parallax interne, plus vivant)
+  const scrollImgScale = useTransform(
+    scrollYProgress,
+    [0, 0.5, 1],
+    [1.12, 1.04, 1.12]
+  );
+  // Glare en sweep horizontal
+  const scrollGlarePos = useTransform(scrollYProgress, [0, 1], [-10, 110]);
+  const touchGlareBg = useTransform(
+    scrollGlarePos,
+    (pos: number) =>
+      `radial-gradient(ellipse at ${pos}% 50%, hsla(40, 80%, 70%, 0.20), transparent 50%)`
+  );
+
   const handleMove = (e: React.MouseEvent) => {
-    if (!ref.current) return;
+    if (!ref.current || isTouch) return;
     const rect = ref.current.getBoundingClientRect();
     x.set(((e.clientX - rect.left) / rect.width - 0.5) * 2);
     y.set(((e.clientY - rect.top) / rect.height - 0.5) * 2);
@@ -67,16 +103,16 @@ const AnimatedImage = ({ src, alt, className = "" }: AnimatedImageProps) => {
     <>
       <motion.div
         ref={ref}
-        onMouseMove={handleMove}
-        onMouseLeave={reset}
+        onMouseMove={isTouch ? undefined : handleMove}
+        onMouseLeave={isTouch ? undefined : reset}
         style={{
-          rotateX,
-          rotateY,
+          rotateX: isTouch ? scrollTilt : rotateX,
+          rotateY: isTouch ? 0 : rotateY,
           transformPerspective: 1100,
           transformStyle: "preserve-3d",
         }}
         className={`relative overflow-hidden rounded-sm glow-gold cursor-pointer group ${className}`}
-        whileHover={{ scale: 1.02 }}
+        whileHover={!isTouch ? { scale: 1.02 } : undefined}
         transition={{ duration: 0.4, ease: "easeOut" }}
         onClick={() => setIsOpen(true)}
       >
@@ -88,19 +124,29 @@ const AnimatedImage = ({ src, alt, className = "" }: AnimatedImageProps) => {
           whileInView={{ scale: 1, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.2, ease: "easeOut" }}
+          // Sur tactile, on remplace le hover-zoom par un parallax interne piloté
+          // par scroll (la photo respire pendant qu'on défile la page)
+          style={isTouch ? { scale: scrollImgScale } : undefined}
         />
 
-        {/* Bordure dorée intérieure qui se dessine au hover */}
+        {/* Bordure dorée intérieure : visible au hover (desktop) ou en
+            permanence subtile sur mobile (sinon l'image paraît plate) */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-2 rounded-sm border border-primary/0 transition-all duration-500 group-hover:border-primary/50"
+          className={`pointer-events-none absolute inset-2 rounded-sm border transition-all duration-500 ${
+            isTouch
+              ? "border-primary/30"
+              : "border-primary/0 group-hover:border-primary/50"
+          }`}
         />
 
-        {/* Glare doré qui suit le curseur (subtil) */}
+        {/* Glare doré */}
         <motion.div
           aria-hidden
-          className="pointer-events-none absolute inset-0 rounded-sm opacity-0 group-hover:opacity-100 transition-opacity duration-700 mix-blend-overlay"
-          style={{ background: glareBg }}
+          className={`pointer-events-none absolute inset-0 rounded-sm transition-opacity duration-700 mix-blend-overlay ${
+            isTouch ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+          }`}
+          style={{ background: isTouch ? touchGlareBg : desktopGlareBg }}
         />
       </motion.div>
 

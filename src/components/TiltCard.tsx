@@ -1,5 +1,12 @@
 import { useRef, ReactNode } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  useScroll,
+} from "framer-motion";
+import { useIsTouch } from "@/hooks/useIsTouch";
 
 interface TiltCardProps {
   children: ReactNode;
@@ -17,6 +24,11 @@ interface TiltCardProps {
  * Effet "tilt" magazine premium. À utiliser sur les images iconiques
  * (héros, images intro, parallaxes).
  *
+ *   • Desktop : tilt suit le mouvement de souris
+ *   • Tactile : tilt piloté par la position de scroll de la carte dans
+ *     le viewport — la carte s'incline légèrement vers nous quand elle
+ *     passe sous nos yeux. Glare animé en sweep gauche→droite.
+ *
  * <TiltCard><img src="..." /></TiltCard>
  */
 const TiltCard = ({
@@ -27,12 +39,12 @@ const TiltCard = ({
   className,
 }: TiltCardProps) => {
   const ref = useRef<HTMLDivElement>(null);
+  const isTouch = useIsTouch();
 
-  // Position normalisée [-1, 1] depuis le centre
+  // ─── Variante DESKTOP : tilt suit la souris ─────────────────────────────
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // Rotation 3D (Y pour mouvement horizontal, X pour vertical, inversés)
   const rotateY = useSpring(useTransform(x, [-1, 1], [-maxTilt, maxTilt]), {
     damping: 22,
     stiffness: 220,
@@ -44,17 +56,38 @@ const TiltCard = ({
     mass: 0.4,
   });
 
-  // Position du glare (en pourcentage)
   const glareX = useTransform(x, [-1, 1], [20, 80]);
   const glareY = useTransform(y, [-1, 1], [20, 80]);
-  const glareBg = useTransform(
+  const desktopGlareBg = useTransform(
     [glareX, glareY] as never,
     ([gx, gy]: number[]) =>
       `radial-gradient(circle at ${gx}% ${gy}%, hsla(40, 80%, 70%, 0.18), transparent 55%)`
   );
 
+  // ─── Variante TACTILE : tilt piloté par le scroll ───────────────────────
+  // scrollYProgress sur l'élément lui-même : 0 = vient d'apparaître en bas
+  // de l'écran, 1 = sort par le haut. On mappe sur une oscillation douce.
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+
+  // Léger tilt vertical : la carte "lève la tête" en entrant, puis "se baisse"
+  // en sortant, comme si elle se tournait pour nous regarder.
+  const scrollTiltX = useSpring(
+    useTransform(scrollYProgress, [0, 0.5, 1], [maxTilt * 0.8, 0, -maxTilt * 0.8]),
+    { damping: 30, stiffness: 90, mass: 0.6 }
+  );
+  // Glare qui balaie de gauche à droite avec le scroll (effet vitre)
+  const scrollGlarePos = useTransform(scrollYProgress, [0, 1], [10, 90]);
+  const touchGlareBg = useTransform(
+    scrollGlarePos,
+    (pos: number) =>
+      `radial-gradient(ellipse at ${pos}% 50%, hsla(40, 80%, 70%, 0.22), transparent 55%)`
+  );
+
   const handleMove = (e: React.MouseEvent) => {
-    if (!ref.current) return;
+    if (!ref.current || isTouch) return;
     const rect = ref.current.getBoundingClientRect();
     const px = (e.clientX - rect.left) / rect.width - 0.5;
     const py = (e.clientY - rect.top) / rect.height - 0.5;
@@ -70,13 +103,13 @@ const TiltCard = ({
   return (
     <motion.div
       ref={ref}
-      onMouseMove={handleMove}
-      onMouseLeave={reset}
-      whileHover={scale !== 1 ? { scale } : undefined}
+      onMouseMove={isTouch ? undefined : handleMove}
+      onMouseLeave={isTouch ? undefined : reset}
+      whileHover={!isTouch && scale !== 1 ? { scale } : undefined}
       transition={{ type: "spring", damping: 22, stiffness: 240 }}
       style={{
-        rotateX,
-        rotateY,
+        rotateX: isTouch ? scrollTiltX : rotateX,
+        rotateY: isTouch ? 0 : rotateY,
         transformPerspective: 1100,
         transformStyle: "preserve-3d",
       }}
@@ -84,11 +117,11 @@ const TiltCard = ({
     >
       {children}
 
-      {/* Glare doré qui suit le curseur */}
+      {/* Glare doré */}
       {glare && (
         <motion.div
           className="pointer-events-none absolute inset-0 rounded-[inherit] mix-blend-overlay"
-          style={{ background: glareBg }}
+          style={{ background: isTouch ? touchGlareBg : desktopGlareBg }}
         />
       )}
     </motion.div>

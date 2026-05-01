@@ -32,3 +32,4 @@ catalogue-mobilier/
 /tmp/
 audit-*/
 errors.json
+.vercel
