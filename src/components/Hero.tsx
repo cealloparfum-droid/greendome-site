@@ -4,24 +4,44 @@ import { useRef } from "react";
 import heroBg from "@/assets/dome-montagne.png";
 import GoldParticles from "./GoldParticles";
 import Magnetic from "./Magnetic";
+import { useIsTouch } from "@/hooks/useIsTouch";
+import { useDeviceTilt } from "@/hooks/useDeviceTilt";
 
 const Hero = () => {
   const ref = useRef<HTMLElement>(null);
+  const isTouch = useIsTouch();
+  const { x: gyroX, y: gyroY, supported: gyroSupported } = useDeviceTilt();
+
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+
+  // Parallax plus fort sur mobile (compense l'absence de hover et donne
+  // une vraie sensation de profondeur en scrollant)
+  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", isTouch ? "45%" : "30%"]);
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1, isTouch ? 1.18 : 1.05]);
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+
+  // Décalage léger du fond avec l'inclinaison du tél (parallax gyroscope)
+  const gyroBgX = gyroSupported ? `${gyroX * 3}%` : "0%";
+  const gyroBgYShift = gyroSupported ? `${gyroY * 2}%` : "0%";
 
   return (
     <section ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Parallax Background */}
-      <motion.div className="absolute inset-0 z-0" style={{ y: bgY }}>
+      <motion.div
+        className="absolute inset-0 z-0"
+        style={{ y: bgY, scale: bgScale, x: gyroBgX, translateY: gyroBgYShift }}
+      >
         <img src={heroBg} alt="Dôme transparent dans la nature au coucher du soleil" className="w-full h-[120%] object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/50 to-background" />
       </motion.div>
 
-      {/* Poussière d'or */}
-      <GoldParticles density={40} speed={-0.1} maxOpacity={0.55} />
+      {/* Poussière d'or — densité et opacité boostées sur mobile */}
+      <GoldParticles
+        density={isTouch ? 70 : 40}
+        speed={isTouch ? -0.18 : -0.1}
+        maxOpacity={isTouch ? 0.7 : 0.55}
+      />
 
       <motion.div className="relative z-10 container mx-auto px-6 text-center pt-20" style={{ y: textY, opacity }}>
         <motion.div

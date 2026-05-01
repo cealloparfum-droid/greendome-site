@@ -9,6 +9,7 @@ import {
 } from "framer-motion";
 import { X } from "lucide-react";
 import { useIsTouch } from "@/hooks/useIsTouch";
+import { useDeviceTilt } from "@/hooks/useDeviceTilt";
 
 interface AnimatedImageProps {
   src: string;
@@ -25,11 +26,12 @@ interface AnimatedImageProps {
  *     - Glare doré qui suit le pointeur
  *
  *   Mobile (tactile) :
- *     - Tilt 3D piloté par le scroll (la photo "se tourne" vers nous
- *       quand elle passe sous nos yeux)
- *     - Glare doré qui balaie de gauche à droite avec le scroll
- *     - Bordure dorée révélée à l'entrée dans le viewport
- *     - Léger zoom continu (parallax interne) pour vivacité
+ *     - Tilt 3D fort (jusqu'à 12°) : combine scroll + gyroscope du tél
+ *     - Image en parallax interne (zoom respirant pendant le scroll)
+ *     - Bordure dorée animée en permanence (pulsation)
+ *     - Glare doré qui balaie horizontalement avec le scroll
+ *     - Scale qui respire (0.96 → 1.04 → 0.96) pendant le scroll
+ *     - Tap = scale-down feedback
  *
  *   Communs :
  *     - Lightbox au clic / tap
@@ -39,6 +41,7 @@ const AnimatedImage = ({ src, alt, className = "" }: AnimatedImageProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const isTouch = useIsTouch();
+  const { x: gyroX, y: gyroY, supported: gyroSupported } = useDeviceTilt();
 
   // ─── Desktop : suit la souris ────────────────────────────────────────
   const x = useMotionValue(0);
@@ -63,28 +66,60 @@ const AnimatedImage = ({ src, alt, className = "" }: AnimatedImageProps) => {
       `radial-gradient(circle at ${gx}% ${gy}%, hsla(40, 80%, 70%, 0.15), transparent 55%)`
   );
 
-  // ─── Mobile : piloté par le scroll ───────────────────────────────────
+  // ─── Mobile : scroll + gyroscope ─────────────────────────────────────
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
-  // Tilt vertical : entre par en-dessous (+4°), passe à plat (0°), sort vers le haut (-4°)
-  const scrollTilt = useSpring(
-    useTransform(scrollYProgress, [0, 0.5, 1], [4, 0, -4]),
-    { damping: 30, stiffness: 90, mass: 0.6 }
+
+  // Tilt vertical fort piloté par scroll (-12° → 0° → +12°)
+  const scrollTiltX = useTransform(
+    scrollYProgress,
+    [0, 0.5, 1],
+    [12, 0, -12]
   );
-  // Zoom interne sur l'image (effet parallax interne, plus vivant)
+  // Apport gyroscope (incline le tél → la photo bouge)
+  const gyroTiltY = useMotionValue(0);
+  const gyroTiltXAdd = useMotionValue(0);
+  if (gyroSupported) {
+    gyroTiltY.set(gyroX * 8); // ±8° max horizontal
+    gyroTiltXAdd.set(gyroY * 4); // ±4° vertical (s'ajoute au scroll)
+  }
+  const touchRotateX = useSpring(
+    useTransform(
+      [scrollTiltX, gyroTiltXAdd] as never,
+      ([s, g]: number[]) => s + g
+    ),
+    { damping: 26, stiffness: 100, mass: 0.5 }
+  );
+  const touchRotateY = useSpring(gyroTiltY, {
+    damping: 26,
+    stiffness: 100,
+    mass: 0.5,
+  });
+
+  // Parallax interne sur l'image — zoom qui respire pendant le scroll
   const scrollImgScale = useTransform(
     scrollYProgress,
     [0, 0.5, 1],
-    [1.12, 1.04, 1.12]
+    [1.18, 1.04, 1.18]
   );
-  // Glare en sweep horizontal
+  // Translation Y interne pour effet ken-burns
+  const scrollImgY = useTransform(scrollYProgress, [0, 1], ["-4%", "4%"]);
+
+  // Scale du conteneur qui respire
+  const containerScale = useTransform(
+    scrollYProgress,
+    [0, 0.4, 0.6, 1],
+    [0.96, 1.03, 1.03, 0.96]
+  );
+
+  // Glare horizontal qui balaie avec le scroll
   const scrollGlarePos = useTransform(scrollYProgress, [0, 1], [-10, 110]);
   const touchGlareBg = useTransform(
     scrollGlarePos,
     (pos: number) =>
-      `radial-gradient(ellipse at ${pos}% 50%, hsla(40, 80%, 70%, 0.20), transparent 50%)`
+      `linear-gradient(110deg, transparent ${Math.max(0, pos - 20)}%, hsla(40, 85%, 70%, 0.32) ${pos}%, transparent ${Math.min(100, pos + 20)}%)`
   );
 
   const handleMove = (e: React.MouseEvent) => {
@@ -106,13 +141,15 @@ const AnimatedImage = ({ src, alt, className = "" }: AnimatedImageProps) => {
         onMouseMove={isTouch ? undefined : handleMove}
         onMouseLeave={isTouch ? undefined : reset}
         style={{
-          rotateX: isTouch ? scrollTilt : rotateX,
-          rotateY: isTouch ? 0 : rotateY,
+          rotateX: isTouch ? touchRotateX : rotateX,
+          rotateY: isTouch ? touchRotateY : rotateY,
+          scale: isTouch ? containerScale : undefined,
           transformPerspective: 1100,
           transformStyle: "preserve-3d",
         }}
         className={`relative overflow-hidden rounded-sm glow-gold cursor-pointer group ${className}`}
         whileHover={!isTouch ? { scale: 1.02 } : undefined}
+        whileTap={isTouch ? { scale: 0.97 } : undefined}
         transition={{ duration: 0.4, ease: "easeOut" }}
         onClick={() => setIsOpen(true)}
       >
@@ -124,21 +161,39 @@ const AnimatedImage = ({ src, alt, className = "" }: AnimatedImageProps) => {
           whileInView={{ scale: 1, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          // Sur tactile, on remplace le hover-zoom par un parallax interne piloté
-          // par scroll (la photo respire pendant qu'on défile la page)
-          style={isTouch ? { scale: scrollImgScale } : undefined}
+          // Parallax interne sur tactile
+          style={
+            isTouch ? { scale: scrollImgScale, y: scrollImgY } : undefined
+          }
         />
 
-        {/* Bordure dorée intérieure : visible au hover (desktop) ou en
-            permanence subtile sur mobile (sinon l'image paraît plate) */}
-        <div
-          aria-hidden
-          className={`pointer-events-none absolute inset-2 rounded-sm border transition-all duration-500 ${
-            isTouch
-              ? "border-primary/30"
-              : "border-primary/0 group-hover:border-primary/50"
-          }`}
-        />
+        {/* Bordure dorée :
+            - Desktop : se révèle au hover
+            - Mobile  : pulse en permanence (vivacité) */}
+        {isTouch ? (
+          <motion.div
+            aria-hidden
+            className="pointer-events-none absolute inset-2 rounded-sm border"
+            animate={{
+              borderColor: [
+                "hsla(38, 75%, 60%, 0.30)",
+                "hsla(38, 75%, 60%, 0.75)",
+                "hsla(38, 75%, 60%, 0.30)",
+              ],
+              boxShadow: [
+                "inset 0 0 0px hsla(38, 75%, 60%, 0)",
+                "inset 0 0 24px hsla(38, 75%, 60%, 0.25)",
+                "inset 0 0 0px hsla(38, 75%, 60%, 0)",
+              ],
+            }}
+            transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
+          />
+        ) : (
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-2 rounded-sm border border-primary/0 transition-all duration-500 group-hover:border-primary/50"
+          />
+        )}
 
         {/* Glare doré */}
         <motion.div
@@ -148,6 +203,18 @@ const AnimatedImage = ({ src, alt, className = "" }: AnimatedImageProps) => {
           }`}
           style={{ background: isTouch ? touchGlareBg : desktopGlareBg }}
         />
+
+        {/* Indicateur "tap pour agrandir" — visible uniquement sur tactile */}
+        {isTouch && (
+          <motion.div
+            aria-hidden
+            className="pointer-events-none absolute bottom-3 right-3 px-2.5 py-1 rounded-full bg-black/45 backdrop-blur-sm text-[9px] tracking-[0.25em] uppercase text-[hsl(38,75%,70%)] font-display font-semibold border border-primary/30"
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+          >
+            Tap
+          </motion.div>
+        )}
       </motion.div>
 
       {/* Lightbox */}

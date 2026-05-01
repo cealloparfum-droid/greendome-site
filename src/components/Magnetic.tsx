@@ -16,9 +16,9 @@ interface MagneticProps {
  * Magnetic — wrapper qui attire son contenu vers le curseur quand on s'en approche.
  * À utiliser autour des CTA, boutons primaires et liens importants.
  *
- *   • Desktop (souris) : attraction magnétique sur mousemove
- *   • Tactile (mobile) : pulse de respiration continu + halo doux pulsé
- *     pour garder une sensation de vie sur l'élément
+ *   • Desktop (souris) : attraction magnétique sur mousemove.
+ *   • Tactile (mobile) : pulsation marquée + halo doré pulsé + effet
+ *     de respiration soutenu pour un CTA qui réclame le doigt.
  *
  * <Magnetic><a href="...">Devis</a></Magnetic>
  */
@@ -61,14 +61,16 @@ const Magnetic = ({
 
   const Wrapper = as === "span" ? motion.span : motion.div;
 
-  // Sur tactile, on remplace l'effet magnétique par une pulsation continue
-  // pour donner une présence visuelle au CTA (sinon il paraît mort).
+  // Sur tactile, on remplace l'effet magnétique par une pulsation
+  // soutenue (scale + halo + drop-shadow) pour un CTA qui appelle clairement.
   const touchAnim = isTouch
     ? {
-        scale: [1, 1.025, 1],
+        scale: [1, 1.06, 1, 1.04, 1],
         filter: [
           "drop-shadow(0 0 0px hsla(38,75%,60%,0))",
-          "drop-shadow(0 0 14px hsla(38,75%,60%,0.45))",
+          "drop-shadow(0 0 22px hsla(38,75%,60%,0.75))",
+          "drop-shadow(0 0 6px hsla(38,75%,60%,0.25))",
+          "drop-shadow(0 0 16px hsla(38,75%,60%,0.55))",
           "drop-shadow(0 0 0px hsla(38,75%,60%,0))",
         ],
       }
@@ -80,9 +82,10 @@ const Magnetic = ({
       onMouseMove={isTouch ? undefined : handleMouse}
       onMouseLeave={isTouch ? undefined : reset}
       animate={touchAnim}
+      whileTap={isTouch ? { scale: 0.94 } : undefined}
       transition={
         isTouch
-          ? { duration: 2.6, repeat: Infinity, ease: "easeInOut" }
+          ? { duration: 2.4, repeat: Infinity, ease: "easeInOut" }
           : undefined
       }
       style={
