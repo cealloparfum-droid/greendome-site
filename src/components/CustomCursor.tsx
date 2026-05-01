@@ -71,7 +71,7 @@ const CustomCursor = () => {
 
   return (
     <motion.div
-      className="greendome-floating-cursor pointer-events-none fixed top-0 left-0 z-[100] flex items-center justify-center"
+      className="greendome-floating-cursor pointer-events-none fixed top-0 left-0 z-[9999] flex items-center justify-center"
       style={{ x: dotX, y: dotY }}
       animate={{ opacity: visible ? 1 : 0 }}
       transition={{ duration: 0.2 }}
